@@ -1,0 +1,168 @@
+- generic [active] [ref=f11e1]:
+  - banner [ref=f11e2]:
+    - generic [ref=f11e3]:
+      - link "HEMS Kenya home" [ref=f11e4] [cursor=pointer]:
+        - /url: /
+        - generic [aria-hidden] [ref=f11e5]: 
+        - generic [ref=f11e6]:
+          - text: HEMS Kenya
+          - generic [ref=f11e7]: Energy Intelligence
+      - generic [ref=f11e8]:
+        - list [ref=f11e9]:
+          - listitem [ref=f11e10]:
+            - link "Overview" [ref=f11e11] [cursor=pointer]:
+              - /url: "#dashboard-hero"
+              - generic [aria-hidden] [ref=f11e12]: 
+              - text: Overview
+          - listitem [ref=f11e13]:
+            - link "Analytics" [ref=f11e14] [cursor=pointer]:
+              - /url: "#analytics-section"
+              - generic [aria-hidden] [ref=f11e15]: 
+              - text: Analytics
+          - listitem [ref=f11e16]:
+            - link "Fuel Logs" [ref=f11e17] [cursor=pointer]:
+              - /url: "#logs-section"
+              - generic [aria-hidden] [ref=f11e18]: 
+              - text: Fuel Logs
+          - listitem [ref=f11e19]:
+            - link "Reports" [ref=f11e20] [cursor=pointer]:
+              - /url: "#reports-section"
+              - generic [aria-hidden] [ref=f11e21]: 
+              - text: Reports
+        - generic [ref=f11e22]:
+          - button "Tariffs" [disabled]:
+            - generic [aria-hidden]: 
+            - text: Tariffs
+          - text:    
+          - button "Sign In" [ref=f11e23] [cursor=pointer]:
+            - generic [aria-hidden] [ref=f11e24]: 
+            - text: Sign In
+  - main [ref=f11e25]:
+    - generic [ref=f11e26]:
+      - generic [ref=f11e27]:
+        - paragraph [ref=f11e28]: Home energy overview •
+        - heading "My Household" [level=1] [ref=f11e29]
+        - paragraph [ref=f11e30]: Multi-fuel energy, spend, and generation at a glance.
+      - generic [ref=f11e31]:
+        - button "Quick Log LPG" [ref=f11e32] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f11e33]: 
+          - text: Quick Log LPG
+        - button "Log Appliance Run" [ref=f11e34] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f11e35]: 
+          - text: Log Appliance Run
+        - button "Log Kerosene" [ref=f11e36] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f11e37]: 
+          - text: Log Kerosene
+        - button "Log Solar" [ref=f11e38] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f11e39]: 
+          - text: Log Solar
+        - text: 
+    - region "Energy summary" [ref=f11e40]:
+      - article [ref=f11e41]:
+        - generic [ref=f11e43]:
+          - heading "Total Energy Consumed" [level=2] [ref=f11e45]
+          - paragraph [ref=f11e46]: "-- kWh"
+          - paragraph [ref=f11e47]: Thermodynamic equivalent across all 4 fuels
+      - article [ref=f11e48]:
+        - generic [ref=f11e50]:
+          - generic [ref=f11e51]:
+            - heading "Total Utility Spend" [level=2] [ref=f11e52]
+            - generic [ref=f11e53]: This Month
+          - paragraph [ref=f11e54]: KES --
+          - paragraph [ref=f11e55]: Sign in to view breakdown
+      - article [ref=f11e56]:
+        - generic [ref=f11e58]:
+          - generic [ref=f11e59]:
+            - heading "Active Cylinder" [level=2] [ref=f11e60]
+            - generic [ref=f11e61]: LPG
+          - paragraph [ref=f11e62]: No cylinder registered
+          - progressbar "LPG cylinder remaining" [ref=f11e63]
+          - paragraph [ref=f11e64]: No active cylinder
+      - article [ref=f11e65]:
+        - generic [ref=f11e67]:
+          - generic [ref=f11e68]:
+            - heading "Solar Offset Harvest" [level=2] [ref=f11e69]
+            - generic [ref=f11e70]: Free Energy
+          - paragraph [ref=f11e71]: "-- kWh"
+          - paragraph [ref=f11e72]: Sign in to view household data
+    - region "Energy analytics" [ref=f11e73]:
+      - article [ref=f11e74]:
+        - generic [ref=f11e76]:
+          - generic [ref=f11e77]:
+            - generic [ref=f11e78]:
+              - heading "Energy consumption" [level=2] [ref=f11e79]
+              - paragraph [ref=f11e80]: Weekly normalized use · kWh equivalent
+            - generic [ref=f11e81]: Sign in to view household data
+          - img "Weekly energy consumption across grid electricity, LPG gas, kerosene, and solar harvest" [ref=f11e83]
+          - table [ref=f11e85]:
+            - caption [ref=f11e86]: Weekly Energy Consumption Data Summary in kWh
+            - rowgroup [ref=f11e87]:
+              - row [ref=f11e88]:
+                - columnheader "Week" [ref=f11e89]
+                - columnheader "Electricity" [ref=f11e90]
+                - columnheader "LPG" [ref=f11e91]
+                - columnheader "Kerosene" [ref=f11e92]
+                - columnheader "Solar" [ref=f11e93]
+            - rowgroup
+      - article [ref=f11e94]:
+        - generic [ref=f11e96]:
+          - generic [ref=f11e97]:
+            - generic [ref=f11e98]:
+              - heading "Energy spend mix" [level=2] [ref=f11e99]
+              - paragraph [ref=f11e100]: Share of household fuel costs
+            - generic [ref=f11e101]: Sign in to view household data
+          - img "Fuel expense distribution across energy sources" [ref=f11e103]
+          - table [ref=f11e105]:
+            - caption [ref=f11e106]: Proportional Fuel Expense Distribution
+            - rowgroup [ref=f11e107]:
+              - row [ref=f11e108]:
+                - columnheader "Fuel Type" [ref=f11e109]
+                - columnheader "Share (%)" [ref=f11e110]
+            - rowgroup [ref=f11e111]:
+              - row [ref=f11e112]:
+                - cell "Grid Electricity" [ref=f11e113]
+                - cell "—" [ref=f11e114]
+              - row [ref=f11e115]:
+                - cell "LPG Cooking Gas" [ref=f11e116]
+                - cell "—" [ref=f11e117]
+              - row [ref=f11e118]:
+                - cell "Domestic Kerosene" [ref=f11e119]
+                - cell "—" [ref=f11e120]
+              - row [ref=f11e121]:
+                - cell "Solar Offset" [ref=f11e122]
+                - cell "—" [ref=f11e123]
+          - generic [ref=f11e124]:
+            - heading "Fuel cost comparison (KES / kWh equivalent)" [level=3] [ref=f11e125]
+            - generic [ref=f11e126]: Sign in to view household cost comparison.
+    - region [ref=f11e127]:
+      - generic [ref=f11e128]:
+        - generic [ref=f11e129]:
+          - heading "Energy report" [level=2] [ref=f11e130]
+          - paragraph [ref=f11e131]: Review energy, cost, trends, and recommendations for a selected date range.
+        - generic [ref=f11e132]:
+          - generic [ref=f11e133]:
+            - generic [ref=f11e134]: Timeframe
+            - combobox "Timeframe" [ref=f11e135]:
+              - option "This week"
+              - option "This month" [selected]
+              - option "Custom date range"
+          - generic [ref=f11e136]:
+            - button "Generate report" [disabled]
+        - status [ref=f11e137]: Sign in to generate a household report.
+    - generic [ref=f11e139]:
+      - generic [ref=f11e140]:
+        - heading "Recent Multi-Source Energy Logs" [level=2] [ref=f11e141]
+        - generic [ref=f11e142]: Real-time normalized records
+        - text: 
+      - table [ref=f11e144]:
+        - caption [ref=f11e145]: Recent Multi-Source Energy Logs
+        - rowgroup [ref=f11e146]:
+          - row [ref=f11e147]:
+            - columnheader "Date & Time" [ref=f11e148]
+            - columnheader "Energy Vector" [ref=f11e149]
+            - columnheader "Input Measurement" [ref=f11e150]
+            - columnheader "Normalized Energy (kWh)" [ref=f11e151]
+        - rowgroup [ref=f11e152]:
+          - row [ref=f11e153]:
+            - cell "Sign in to view household logs." [ref=f11e154]
+  - text:        

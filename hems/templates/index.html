@@ -1,0 +1,1458 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>HEMS Kenya | Home Energy Consumption Management System</title>
+    <meta
+      name="description"
+      content="Unified domestic energy management system for Kenyan households. Track KPLC electricity, LPG cooking gas, domestic kerosene, and rooftop solar backup."
+    />
+    <meta name="theme-color" content="#f8f9fa" />
+    <link rel="manifest" href="/static/manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  </head>
+  <body class="bg-body-tertiary text-body">
+    <header
+      class="navbar navbar-expand-lg bg-white sticky-top border-bottom shadow-sm px-3 px-lg-4"
+    >
+      <div class="container-fluid">
+        <a
+          class="navbar-brand d-flex align-items-center gap-2 fw-bold text-success me-2 me-lg-4"
+          href="/"
+          aria-label="HEMS Kenya home"
+        >
+          <i
+            class="bi bi-lightning-charge-fill icon icon-brand"
+            aria-hidden="true"
+          ></i>
+          <span
+            >HEMS Kenya
+            <small class="d-block text-secondary fw-normal"
+              >Energy Intelligence</small
+            ></span
+          >
+        </a>
+
+        <!-- Responsive Hamburger Toggler -->
+        <button
+          class="navbar-toggler border-0 shadow-none p-2"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarMainCollapse"
+          aria-controls="navbarMainCollapse"
+          aria-expanded="false"
+          aria-label="Toggle navigation menu"
+          id="btn-navbar-toggler"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible Content -->
+        <div class="collapse navbar-collapse" id="navbarMainCollapse">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 py-2 py-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link active fw-medium px-lg-3"
+                aria-current="page"
+                href="#dashboard-hero"
+              >
+                <i
+                  class="bi bi-grid-1x2-fill me-1 text-success"
+                  aria-hidden="true"
+                ></i>
+                Overview
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link fw-medium px-lg-3"
+                href="#analytics-section"
+              >
+                <i
+                  class="bi bi-graph-up me-1 text-success"
+                  aria-hidden="true"
+                ></i>
+                Analytics
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link fw-medium px-lg-3" href="#logs-section">
+                <i
+                  class="bi bi-table me-1 text-success"
+                  aria-hidden="true"
+                ></i>
+                Fuel Logs
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link fw-medium px-lg-3" href="#reports-section">
+                <i
+                  class="bi bi-file-earmark-bar-graph me-1 text-success"
+                  aria-hidden="true"
+                ></i>
+                Reports
+              </a>
+            </li>
+          </ul>
+
+          <div
+            class="navbar-actions d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-2 pt-3 pt-lg-0 border-top border-lg-0"
+          >
+            <button
+              class="btn btn-outline-success btn-sm d-inline-flex align-items-center justify-content-center gap-1"
+              id="btn-tariffs-modal"
+              aria-haspopup="dialog"
+              disabled
+              onclick="openModal('modal-tariff')"
+            >
+              <i class="bi bi-gear-fill icon" aria-hidden="true"></i> Tariffs
+            </button>
+            <div class="dropdown d-none" id="user-dropdown-container">
+              <button
+                class="btn btn-light btn-sm text-secondary dropdown-toggle d-inline-flex align-items-center justify-content-center gap-1 w-100"
+                type="button"
+                id="btn-user-badge"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-person-circle icon" aria-hidden="true"></i>
+                <span id="user-display-name">Account</span>
+              </button>
+              <ul
+                class="dropdown-menu dropdown-menu-end shadow-sm"
+                aria-labelledby="btn-user-badge"
+              >
+                <li>
+                  <h6
+                    class="dropdown-header text-truncate"
+                    id="user-dropdown-header"
+                  >
+                    Account
+                  </h6>
+                </li>
+                <li>
+                  <span
+                    class="dropdown-item-text small text-secondary"
+                    id="user-dropdown-role"
+                  >
+                    Signed-in user
+                  </span>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <button
+                    class="dropdown-item d-flex align-items-center gap-2"
+                    type="button"
+                    onclick="openAuthModal('login')"
+                  >
+                    <i
+                      class="bi bi-person-fill-gear text-success"
+                      aria-hidden="true"
+                    ></i
+                    >Switch Account
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="dropdown-item d-flex align-items-center gap-2"
+                    type="button"
+                    onclick="openAuthModal('signup')"
+                  >
+                    <i
+                      class="bi bi-person-plus-fill text-success"
+                      aria-hidden="true"
+                    ></i
+                    >New Account
+                  </button>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <button
+                    class="dropdown-item text-danger d-flex align-items-center gap-2"
+                    type="button"
+                    onclick="handleLogout()"
+                  >
+                    <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+                    Sign Out
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <!-- Login Button when signed out -->
+            <button
+              class="btn btn-success btn-sm d-inline-flex align-items-center justify-content-center gap-1"
+              id="btn-login-open"
+              type="button"
+              onclick="openAuthModal('login')"
+            >
+              <i class="bi bi-box-arrow-in-right icon" aria-hidden="true"></i
+              >Sign In
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container py-4 py-lg-5">
+      <section
+        id="dashboard-hero"
+        class="dashboard-hero d-flex flex-column flex-xl-row justify-content-between align-items-xl-end gap-4 mb-4"
+      >
+        <div>
+          <p class="dashboard-hero__eyebrow mb-2">
+            Home energy overview <span aria-hidden="true">&bull;</span>
+            <span id="hero-period-label">—</span>
+          </p>
+          <h1 class="fw-bold mb-2" id="hero-household-name">My Household</h1>
+          <p class="dashboard-hero__subtitle mb-0">
+            <span id="hero-location"></span>Multi-fuel
+            energy, spend, and generation at a glance.
+          </p>
+        </div>
+        <div class="dashboard-hero__actions d-flex flex-wrap gap-2">
+          <button
+            class="btn btn-success"
+            id="btn-open-lpg"
+            onclick="openModal('modal-lpg')"
+          >
+            <i class="bi bi-fire icon" aria-hidden="true"></i> Quick Log LPG
+          </button>
+          <button
+            class="btn btn-outline-secondary"
+            id="btn-open-appliance"
+            onclick="openModal('modal-appliance')"
+          >
+            <i class="bi bi-lightning-charge-fill icon" aria-hidden="true"></i>
+            Log Appliance Run
+          </button>
+          <button
+            class="btn btn-outline-secondary"
+            id="btn-open-fuel"
+            onclick="openModal('modal-fuel')"
+          >
+            <i class="bi bi-droplet-fill icon" aria-hidden="true"></i> Log
+            Kerosene
+          </button>
+          <button
+            class="btn btn-outline-secondary"
+            id="btn-open-solar"
+            onclick="openModal('modal-solar')"
+          >
+            <i class="bi bi-sun-fill icon" aria-hidden="true"></i> Log Solar
+          </button>
+          <button
+            class="btn btn-outline-secondary d-none"
+            id="btn-manage-appliances"
+            type="button"
+            onclick="openModal('modal-appliance-management')"
+          >
+            <i class="bi bi-plug-fill icon" aria-hidden="true"></i>
+            Manage Appliances
+          </button>
+        </div>
+      </section>
+
+      <section class="bento-grid mb-4" aria-label="Energy summary">
+        <article id="card-total-energy">
+          <div
+            class="card dashboard-card h-100 border-start border-4 border-success"
+          >
+            <div class="card-body">
+              <div
+                class="d-flex justify-content-between align-items-start gap-2 mb-3"
+              >
+                <h2
+                  class="small text-secondary text-uppercase fw-semibold mb-0"
+                >
+                  Total Energy Consumed
+                </h2>
+                <span class="badge bg-success-subtle text-success-emphasis d-none" id="kpi-energy-badge"
+                  ></span
+                >
+              </div>
+              <p class="h3 fw-bold text-success mb-1" id="kpi-total-energy">
+                -- kWh
+              </p>
+              <p class="small text-secondary mb-0">
+                Thermodynamic equivalent across all 4 fuels
+              </p>
+            </div>
+          </div>
+        </article>
+        <article id="card-total-cost">
+          <div
+            class="card dashboard-card h-100 border-start border-4 border-info"
+          >
+            <div class="card-body">
+              <div
+                class="d-flex justify-content-between align-items-start gap-2 mb-3"
+              >
+                <h2
+                  class="small text-secondary text-uppercase fw-semibold mb-0"
+                >
+                  Total Utility Spend
+                </h2>
+                <span class="badge bg-info-subtle text-info-emphasis"
+                  >This Month</span
+                >
+              </div>
+              <p class="h3 fw-bold text-info mb-1" id="kpi-total-cost">
+                KES --
+              </p>
+              <p class="small text-secondary mb-0" id="kpi-cost-breakdown">
+                Sign in to view breakdown
+              </p>
+            </div>
+          </div>
+        </article>
+        <article id="card-lpg-gauge">
+          <div
+            class="card dashboard-card h-100 border-start border-4 border-warning"
+          >
+            <div class="card-body">
+              <div
+                class="d-flex justify-content-between align-items-start gap-2 mb-3"
+              >
+                <h2
+                  class="small text-secondary text-uppercase fw-semibold mb-0"
+                  id="lpg-card-title"
+                >
+                  Active Cylinder
+                </h2>
+                <span class="badge text-bg-warning" id="lpg-card-brand">LPG</span>
+              </div>
+              <p class="h3 fw-bold text-warning mb-1" id="kpi-lpg-remaining">
+                -- kg
+              </p>
+              <div
+                class="progress my-3"
+                role="progressbar"
+                aria-label="LPG cylinder remaining"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                <div
+                  class="progress-bar bg-warning"
+                  id="lpg-fill-bar"
+                  style="width: 0%"
+                ></div>
+              </div>
+              <p class="small text-secondary mb-0" id="lpg-card-meta">
+                No active cylinder
+              </p>
+            </div>
+          </div>
+        </article>
+        <article id="card-solar-offset">
+          <div
+            class="card dashboard-card h-100 border-start border-4 border-primary"
+          >
+            <div class="card-body">
+              <div
+                class="d-flex justify-content-between align-items-start gap-2 mb-3"
+              >
+                <h2
+                  class="small text-secondary text-uppercase fw-semibold mb-0"
+                >
+                  Solar Offset Harvest
+                </h2>
+                <span class="badge text-bg-primary">Free Energy</span>
+              </div>
+              <p class="h3 fw-bold text-primary mb-1" id="kpi-solar-offset">
+                -- kWh
+              </p>
+              <p class="small text-secondary mb-0" id="solar-card-meta">
+                Sign in to view household data
+              </p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section
+        id="advisory-container"
+        class="mb-4"
+        aria-live="polite"
+      ></section>
+
+      <section
+        id="analytics-section"
+        class="analytics-grid mb-4"
+        aria-label="Energy analytics"
+      >
+        <article>
+          <div class="card dashboard-card h-100">
+            <div class="card-body">
+              <div
+                class="chart-heading d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3"
+              >
+                <div>
+                  <h2 class="h5 fw-semibold mb-1">Energy consumption</h2>
+                  <p class="small text-secondary mb-0">
+                    Weekly normalized use
+                    <span aria-hidden="true">&middot;</span> kWh equivalent
+                  </p>
+                </div>
+                <span id="weekly-chart-state" class="chart-state"
+                  >Sign in to view household data</span
+                >
+              </div>
+              <div class="chart-wrapper">
+                <canvas
+                  id="weeklyChart"
+                  role="img"
+                  aria-label="Weekly energy consumption across grid electricity, LPG gas, kerosene, and solar harvest"
+                ></canvas>
+              </div>
+              <div class="visually-hidden" id="sr-weekly-data">
+                <table>
+                  <caption>
+                    Weekly Energy Consumption Data Summary in kWh
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Week</th>
+                      <th scope="col">Electricity</th>
+                      <th scope="col">LPG</th>
+                      <th scope="col">Kerosene</th>
+                      <th scope="col">Solar</th>
+                    </tr>
+                  </thead>
+                  <tbody id="sr-weekly-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article>
+          <div class="card dashboard-card h-100">
+            <div class="card-body">
+              <div
+                class="chart-heading d-flex justify-content-between align-items-start gap-2 mb-2"
+              >
+                <div>
+                  <h2 class="h5 fw-semibold mb-1">Energy spend mix</h2>
+                  <p class="small text-secondary mb-0">
+                    Share of household fuel costs
+                  </p>
+                </div>
+                <span id="donut-chart-state" class="chart-state"
+                  >Sign in to view household data</span
+                >
+              </div>
+              <div class="chart-wrapper chart-wrapper-compact">
+                <canvas
+                  id="donutChart"
+                  role="img"
+                  aria-label="Fuel expense distribution across energy sources"
+                ></canvas>
+              </div>
+              <div class="visually-hidden" id="sr-donut-data">
+                <table>
+                  <caption>
+                    Proportional Fuel Expense Distribution
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Fuel Type</th>
+                      <th scope="col">Share (%)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Grid Electricity</td>
+                      <td id="sr-donut-elec">—</td>
+                    </tr>
+                    <tr>
+                      <td>LPG Cooking Gas</td>
+                      <td id="sr-donut-lpg">—</td>
+                    </tr>
+                    <tr>
+                      <td>Domestic Kerosene</td>
+                      <td id="sr-donut-kero">—</td>
+                    </tr>
+                    <tr>
+                      <td>Solar Offset</td>
+                      <td id="sr-donut-solar">—</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="border-top mt-3 pt-3">
+                <h3 class="h6 text-secondary mb-0">
+                  Energy input cost comparison
+                  <span class="small fw-normal">(KES / kWh input-energy equivalent)</span>
+                </h3>
+                <p class="small text-secondary mt-1 mb-2">
+                  Rates compare energy before appliance losses; they do not predict
+                  the cost of the same cooking task. Actual useful-heat costs depend
+                  on the appliance and how it is used.
+                </p>
+                <div id="parity-container" class="d-grid gap-2">
+                  Sign in to view household cost comparison.
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section
+        id="reports-section"
+        class="card dashboard-card mb-4"
+        aria-labelledby="report-title"
+      >
+        <div class="card-body">
+          <div class="mb-3">
+            <h2 class="h5 fw-semibold mb-1" id="report-title">
+              Energy report
+            </h2>
+            <p class="small text-secondary mb-0">
+              Review energy, cost, trends, and recommendations for a selected
+              date range.
+            </p>
+          </div>
+          <form id="form-report-range" class="row g-3 align-items-end mb-3">
+            <div class="col-12 col-md-4">
+              <label for="report-period" class="form-label">Timeframe</label>
+              <select id="report-period" class="form-select">
+                <option value="week">This week</option>
+                <option value="month" selected>This month</option>
+                <option value="custom">Custom date range</option>
+              </select>
+            </div>
+            <div id="report-custom-range" class="col-12 col-md-6 d-none">
+              <div class="row g-2">
+                <div class="col-12 col-sm-6">
+                  <label for="report-start-date" class="form-label"
+                    >Start date</label
+                  >
+                  <input
+                    id="report-start-date"
+                    type="date"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-12 col-sm-6">
+                  <label for="report-end-date" class="form-label"
+                    >End date</label
+                  >
+                  <input
+                    id="report-end-date"
+                    type="date"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-auto">
+              <button type="submit" class="btn btn-success" id="btn-generate-report" disabled>
+                Generate report
+              </button>
+            </div>
+          </form>
+          <p id="report-status" class="small text-secondary mb-0" role="status" aria-live="polite">
+            Sign in to generate a household report.
+          </p>
+          <div id="report-results" class="d-none mt-3">
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+              <h3 class="h6 fw-semibold mb-0" id="report-period-label"></h3>
+              <span class="chart-state" id="report-chart-state">Selected timeframe</span>
+            </div>
+            <div class="row g-3 mb-3">
+              <div class="col-12 col-md-6">
+                <div class="border rounded p-3 h-100">
+                  <div class="small text-secondary">Total energy</div>
+                  <div class="h4 fw-bold text-success mb-0" id="report-total-energy">0 kWh</div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="border rounded p-3 h-100">
+                  <div class="small text-secondary">Total cost</div>
+                  <div class="h4 fw-bold text-info mb-0" id="report-total-cost">KES 0.00</div>
+                </div>
+              </div>
+            </div>
+            <div class="row g-4">
+              <div class="col-12 col-lg-7">
+                <div class="chart-wrapper">
+                  <canvas
+                    id="reportChart"
+                    role="img"
+                    aria-label="Daily household energy by source for the selected report period"
+                  ></canvas>
+                </div>
+                <div class="visually-hidden">
+                  <table>
+                    <caption>Daily household energy report in kWh</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Electricity</th>
+                        <th scope="col">LPG</th>
+                        <th scope="col">Kerosene</th>
+                        <th scope="col">Solar</th>
+                      </tr>
+                    </thead>
+                    <tbody id="report-trends-table"></tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="col-12 col-lg-5">
+                <div class="table-responsive">
+                  <table class="table table-sm align-middle mb-3">
+                    <caption class="caption-top fw-semibold">
+                      Source cost comparison
+                    </caption>
+                    <thead class="table-light">
+                      <tr>
+                        <th scope="col">Source</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Energy</th>
+                        <th scope="col">Cost</th>
+                      </tr>
+                    </thead>
+                    <tbody id="report-sources-table"></tbody>
+                  </table>
+                </div>
+                <div id="report-advisory" aria-live="polite"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="logs-section"
+        class="card dashboard-card logs-card mb-4"
+      >
+        <div class="card-body">
+          <div
+            class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3"
+          >
+            <h2 class="h5 fw-semibold mb-0">Recent Multi-Source Energy Logs</h2>
+            <span class="small text-secondary d-none d-sm-inline"
+              >Real-time normalized records</span
+            >
+            <span class="small text-secondary d-sm-none"
+              ><i class="bi bi-arrow-left-right me-1" aria-hidden="true"></i
+              >Swipe table</span
+            >
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle mb-0">
+              <caption class="visually-hidden">
+                Recent Multi-Source Energy Logs
+              </caption>
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">Date & Time</th>
+                  <th scope="col">Energy Vector</th>
+                  <th scope="col">Input Measurement</th>
+                  <th scope="col">Normalized Energy (kWh)</th>
+                </tr>
+              </thead>
+              <tbody id="recent-logs-body">
+                <tr>
+                  <td colspan="4" class="text-center text-secondary">
+                    Sign in to view household logs.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div
+      class="modal fade"
+      id="modal-appliance-management"
+      tabindex="-1"
+      aria-labelledby="appliance-management-title"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fs-5" id="appliance-management-title">
+              Manage appliance profiles
+            </h2>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close appliance management"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="form-appliance-profile" class="mb-4">
+              <input id="appliance-profile-id" type="hidden" />
+              <div class="row g-3">
+                <div class="col-12 col-md-6">
+                  <label for="appliance-profile-name" class="form-label"
+                    >Appliance name</label
+                  >
+                  <input
+                    id="appliance-profile-name"
+                    class="form-control"
+                    type="text"
+                    maxlength="120"
+                    required
+                  />
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="appliance-profile-category" class="form-label"
+                    >Category</label
+                  >
+                  <input
+                    id="appliance-profile-category"
+                    class="form-control"
+                    type="text"
+                    list="appliance-category-options"
+                    maxlength="40"
+                    value="OTHER"
+                    required
+                  />
+                  <datalist id="appliance-category-options">
+                    <option value="COOKING"></option>
+                    <option value="ENTERTAINMENT"></option>
+                    <option value="LIGHTING"></option>
+                    <option value="REFRIGERATION"></option>
+                    <option value="WATER_HEATING"></option>
+                    <option value="OTHER"></option>
+                  </datalist>
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="appliance-profile-wattage" class="form-label"
+                    >Rated wattage (W)</label
+                  >
+                  <input
+                    id="appliance-profile-wattage"
+                    class="form-control"
+                    type="number"
+                    min="0.01"
+                    step="any"
+                    required
+                  />
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="appliance-profile-duty" class="form-label"
+                    >Default duty cycle (0 to 1)</label
+                  >
+                  <input
+                    id="appliance-profile-duty"
+                    class="form-control"
+                    type="number"
+                    min="0"
+                    max="1"
+                    step="any"
+                    value="1"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
+                <button
+                  type="submit"
+                  class="btn btn-success"
+                  id="btn-submit-appliance-profile"
+                >
+                  Add appliance
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary d-none"
+                  id="btn-cancel-appliance-edit"
+                >
+                  Cancel edit
+                </button>
+              </div>
+              <p
+                id="appliance-profile-feedback"
+                class="small mb-0 mt-2"
+                role="status"
+                aria-live="polite"
+              ></p>
+            </form>
+            <h3 class="h6 fw-semibold">Registered appliances</h3>
+            <p class="small text-secondary d-sm-none">
+              Swipe the table to view all appliance details and actions.
+            </p>
+            <div class="table-responsive">
+              <table class="table table-striped align-middle">
+                <caption class="visually-hidden">
+                  Registered appliance profiles and management actions
+                </caption>
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Wattage</th>
+                    <th scope="col">Duty cycle</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="managed-appliances-body">
+                  <tr>
+                    <td colspan="5" class="text-center text-secondary">
+                      Sign in to view appliance profiles.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="modal-lpg"
+      tabindex="-1"
+      aria-labelledby="modal-lpg-title"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fs-5" id="modal-lpg-title">
+              <i class="bi bi-fire icon" aria-hidden="true"></i> Log LPG
+              Cylinder Scale Reading
+            </h2>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close LPG dialog"
+            ></button>
+          </div>
+          <form id="form-lpg-log">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="lpg-profile" class="form-label"
+                  >Active Cylinder Profile</label
+                ><input
+                  id="lpg-profile"
+                  type="text"
+                  class="form-control"
+                  value="No active cylinder registered"
+                  disabled
+                />
+              </div>
+              <div class="mb-3">
+                <label for="lpg-log-date" class="form-label">Reading Date</label
+                ><input
+                  type="date"
+                  id="lpg-log-date"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="lpg-gross-weight" class="form-label"
+                  >Current Gross Scale Weight (kg)</label
+                ><input
+                  type="number"
+                  inputmode="decimal"
+                  id="lpg-gross-weight"
+                  class="form-control"
+                  min="0.1"
+                  step="any"
+                  placeholder="e.g. 21.40"
+                  required
+                />
+              </div>
+              <div class="form-check mb-3">
+                <input
+                  type="checkbox"
+                  id="lpg-refill-check"
+                  class="form-check-input"
+                /><label for="lpg-refill-check" class="form-check-label"
+                  >This is a brand new cylinder refill</label
+                >
+              </div>
+              <div class="alert alert-success mb-0">
+                <div class="d-flex justify-content-between">
+                  <span>Net Gas Remaining:</span
+                  ><span id="calc-net-gas">0.00 kg (0.0%)</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span>Gas Burned Since Last Reading:</span
+                  ><span id="calc-burned-kwh">0.00 kg (0.00 kWh)</span>
+                </div>
+                <div class="d-flex justify-content-between fw-semibold">
+                  <span>Equivalent Energy Value:</span
+                  ><span id="calc-val-kes">KES 0.00</span>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancel</button
+              ><button
+                type="submit"
+                class="btn btn-success"
+                id="btn-submit-lpg"
+              >
+                Save Reading
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="modal-appliance"
+      tabindex="-1"
+      aria-labelledby="modal-appliance-title"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fs-5" id="modal-appliance-title">
+              <i
+                class="bi bi-lightning-charge-fill icon"
+                aria-hidden="true"
+              ></i>
+              Record Electrical Appliance Runtime
+            </h2>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close appliance dialog"
+            ></button>
+          </div>
+          <form id="form-appliance-log">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="appliance-log-date" class="form-label"
+                  >Log Date</label
+                ><input
+                  type="date"
+                  id="appliance-log-date"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="appliance-select" class="form-label"
+                  >Select Registered Appliance</label
+                ><select
+                  id="appliance-select"
+                  class="form-select"
+                  required
+                ></select>
+              </div>
+              <div class="mb-3">
+                <label for="appliance-runtime" class="form-label"
+                  >Runtime Hours (0 to 24 hrs)</label
+                ><input
+                  type="number"
+                  inputmode="decimal"
+                  id="appliance-runtime"
+                  class="form-control"
+                  min="0.1"
+                  max="24"
+                  step="any"
+                  value="4.0"
+                  required
+                />
+              </div>
+              <div class="alert alert-success mb-0">
+                <div class="d-flex justify-content-between">
+                  <span>Computed Electricity:</span
+                  ><span id="appliance-calc-kwh">0.000 kWh</span>
+                </div>
+                <div class="d-flex justify-content-between fw-semibold">
+                  <span>Estimated KPLC Token Cost:</span
+                  ><span id="appliance-calc-cost">KES 0.00</span>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancel</button
+              ><button
+                type="submit"
+                class="btn btn-success"
+                id="btn-submit-appliance"
+              >
+                Record Runtime
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="modal-fuel"
+      tabindex="-1"
+      aria-labelledby="modal-fuel-title"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fs-5" id="modal-fuel-title">
+              <i class="bi bi-droplet-fill icon" aria-hidden="true"></i> Log
+              Domestic Kerosene Use
+            </h2>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close kerosene dialog"
+            ></button>
+          </div>
+          <form id="form-kerosene-log">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="kero-log-date" class="form-label">Log Date</label
+                ><input
+                  type="date"
+                  id="kero-log-date"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="kero-liters" class="form-label">Liters Used</label
+                ><input
+                  type="number"
+                  inputmode="decimal"
+                  id="kero-liters"
+                  class="form-control"
+                  min="0.1"
+                  step="any"
+                  placeholder="e.g. 1.5"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="kero-purpose" class="form-label">Application</label
+                ><select id="kero-purpose" class="form-select">
+                  <option value="Water Heating">Water Heating</option>
+                  <option value="Emergency Cooking">Emergency Cooking</option>
+                  <option value="Lighting">Lighting</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancel</button
+              ><button
+                type="submit"
+                class="btn btn-success"
+                id="btn-submit-fuel"
+              >
+                Save Log
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="modal-solar"
+      tabindex="-1"
+      aria-labelledby="modal-solar-title"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fs-5" id="modal-solar-title">
+              <i class="bi bi-sun-fill icon" aria-hidden="true"></i> Log Solar
+              Photovoltaic Generation
+            </h2>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close solar dialog"
+            ></button>
+          </div>
+          <form id="form-solar-log">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="solar-log-date" class="form-label">Log Date</label
+                ><input
+                  type="date"
+                  id="solar-log-date"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="solar-yield" class="form-label"
+                  >Daily Generation Yield (kWh)</label
+                ><input
+                  type="number"
+                  inputmode="decimal"
+                  id="solar-yield"
+                  class="form-control"
+                  min="0.1"
+                  step="any"
+                  placeholder="e.g. 3.2"
+                  required
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancel</button
+              ><button
+                type="submit"
+                class="btn btn-success"
+                id="btn-submit-solar"
+              >
+                Record Solar Yield
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="modal-tariff"
+      tabindex="-1"
+      aria-labelledby="modal-tariff-title"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fs-5" id="modal-tariff-title">
+              <i class="bi bi-gear-fill icon" aria-hidden="true"></i>
+              Configure Kenyan Utility Tariffs
+            </h2>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close tariffs dialog"
+            ></button>
+          </div>
+          <form id="form-tariff">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="tariff-elec" class="form-label"
+                  >KPLC Grid Electricity (KES / kWh)</label
+                ><input
+                  type="number"
+                  inputmode="decimal"
+                  id="tariff-elec"
+                  class="form-control"
+                  min="0.01"
+                  step="any"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="tariff-lpg" class="form-label"
+                  >LPG Retail Price (KES / kg)</label
+                ><input
+                  type="number"
+                  inputmode="decimal"
+                  id="tariff-lpg"
+                  class="form-control"
+                  min="0.01"
+                  step="any"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="tariff-kero" class="form-label"
+                  >Domestic Kerosene (KES / Liter)</label
+                ><input
+                  type="number"
+                  inputmode="decimal"
+                  id="tariff-kero"
+                  class="form-control"
+                  min="0.01"
+                  step="any"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="tariff-effective-date" class="form-label"
+                  >New prices start on</label
+                >
+                <input
+                  type="date"
+                  id="tariff-effective-date"
+                  class="form-control"
+                  required
+                />
+                <div class="form-text">
+                  Applies to energy logs dated on or after this date.
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancel</button
+              ><button
+                type="submit"
+                class="btn btn-success"
+                id="btn-submit-tariff"
+              >
+                Update Tariffs
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Authentication Modal (Login / Sign Up) -->
+    <div
+      class="modal fade"
+      id="modal-auth"
+      tabindex="-1"
+      aria-labelledby="modal-auth-title"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-0 pb-0">
+            <h2 class="modal-title fs-5" id="modal-auth-title">
+              <i
+                class="bi bi-shield-lock-fill text-success icon me-1"
+                aria-hidden="true"
+              ></i>
+              HEMS Account
+            </h2>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close authentication dialog"
+            ></button>
+          </div>
+          <div class="modal-body pt-2">
+            <ul
+              class="nav nav-pills nav-fill mb-3 p-1 bg-light rounded-3"
+              role="tablist"
+            >
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active fw-medium py-2"
+                  id="tab-login"
+                  data-bs-toggle="pill"
+                  data-bs-target="#pane-login"
+                  type="button"
+                  role="tab"
+                  aria-controls="pane-login"
+                  aria-selected="true"
+                >
+                  <i
+                    class="bi bi-box-arrow-in-right me-1"
+                    aria-hidden="true"
+                  ></i
+                  >Sign In
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link fw-medium py-2"
+                  id="tab-register"
+                  data-bs-toggle="pill"
+                  data-bs-target="#pane-register"
+                  type="button"
+                  role="tab"
+                  aria-controls="pane-register"
+                  aria-selected="false"
+                >
+                  <i
+                    class="bi bi-person-plus-fill me-1"
+                    aria-hidden="true"
+                  ></i
+                  >Create Account
+                </button>
+              </li>
+            </ul>
+
+            <div
+              id="auth-alert"
+              class="alert alert-danger py-2 px-3 small d-none"
+              role="alert"
+            ></div>
+
+            <div class="tab-content">
+              <!-- Sign In Pane -->
+              <div
+                class="tab-pane fade show active"
+                id="pane-login"
+                role="tabpanel"
+                aria-labelledby="tab-login"
+              >
+                <form id="form-login">
+                  <div class="mb-3">
+                    <label for="login-username" class="form-label"
+                      >Username</label
+                    >
+                    <input
+                      type="text"
+                      id="login-username"
+                      class="form-control"
+                      placeholder="Enter your username"
+                      autocomplete="username"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="login-password" class="form-label"
+                      >Password</label
+                    >
+                    <input
+                      type="password"
+                      id="login-password"
+                      class="form-control"
+                      placeholder="••••••••"
+                      autocomplete="current-password"
+                      required
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    class="btn btn-success w-100 py-2"
+                    id="btn-submit-login"
+                  >
+                    Sign In
+                  </button>
+                </form>
+              </div>
+
+              <!-- Sign Up Pane -->
+              <div
+                class="tab-pane fade"
+                id="pane-register"
+                role="tabpanel"
+                aria-labelledby="tab-register"
+              >
+                <form id="form-register">
+                  <div class="mb-3">
+                    <label for="register-household" class="form-label"
+                      >Household Name</label
+                    >
+                    <input
+                      type="text"
+                      id="register-household"
+                      class="form-control"
+                      placeholder="e.g. Kariuki Household"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="register-username" class="form-label"
+                      >Username</label
+                    >
+                    <input
+                      type="text"
+                      id="register-username"
+                      class="form-control"
+                      placeholder="e.g. kariuki"
+                      autocomplete="username"
+                      minlength="3"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="register-email" class="form-label"
+                      >Email (Optional)</label
+                    >
+                    <input
+                      type="email"
+                      id="register-email"
+                      class="form-control"
+                      placeholder="name@example.com"
+                      autocomplete="email"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="register-password" class="form-label"
+                      >Password</label
+                    >
+                    <input
+                      type="password"
+                      id="register-password"
+                      class="form-control"
+                      placeholder="Min 6 characters"
+                      autocomplete="new-password"
+                      minlength="6"
+                      required
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    class="btn btn-success w-100 py-2"
+                    id="btn-submit-register"
+                  >
+                    Create Account
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="toast-container"
+      class="toast-container position-fixed bottom-0 end-0 p-3"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/js/app.js"></script>
+  </body>
+</html>

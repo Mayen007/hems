@@ -1,0 +1,13 @@
+[  373081ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:5000/api/v1/auth/me:0
+[  373081ms] [WARNING] Session check failed: TypeError: Failed to fetch
+    at checkAuthSession (http://127.0.0.1:5000/static/js/app.js:34:23)
+    at HTMLDocument.<anonymous> (http://127.0.0.1:5000/static/js/app.js:1053:29) @ http://127.0.0.1:5000/static/js/app.js:45
+[  373104ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:5000/api/v1/appliances:0
+[  373104ms] [ERROR] TypeError: Failed to fetch
+    at apiFetch (http://127.0.0.1:5000/static/js/app.js:24:21)
+    at loadAppliances (http://127.0.0.1:5000/static/js/app.js:788:23)
+    at setupApplianceForm (http://127.0.0.1:5000/static/js/app.js:809:9)
+    at HTMLDocument.<anonymous> (http://127.0.0.1:5000/static/js/app.js:1059:9) @ http://127.0.0.1:5000/static/js/app.js:802
+[  384341ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:5000/static/favicon.svg:0
+[ 1262024ms] [ERROR] Failed to load resource: the server responded with a status of 401 (UNAUTHORIZED) @ http://127.0.0.1:5000/api/v1/auth/me:0
+[ 1262032ms] [ERROR] Failed to load resource: the server responded with a status of 401 (UNAUTHORIZED) @ http://127.0.0.1:5000/api/v1/appliances:0

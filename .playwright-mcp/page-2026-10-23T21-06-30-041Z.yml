@@ -1,0 +1,327 @@
+- generic [ref=f3e1]:
+  - banner [ref=f3e2]:
+    - generic [ref=f3e3]:
+      - link "HEMS Kenya home" [ref=f3e4] [cursor=pointer]:
+        - /url: /
+        - generic [aria-hidden] [ref=f3e5]: 
+        - generic [ref=f3e6]:
+          - text: HEMS Kenya
+          - generic [ref=f3e7]: Energy Intelligence
+      - generic [ref=f3e8]:
+        - list [ref=f3e9]:
+          - listitem [ref=f3e10]:
+            - link "Overview" [ref=f3e11] [cursor=pointer]:
+              - /url: "#dashboard-hero"
+              - generic [aria-hidden] [ref=f3e12]: 
+              - text: Overview
+          - listitem [ref=f3e13]:
+            - link "Analytics" [ref=f3e14] [cursor=pointer]:
+              - /url: "#analytics-section"
+              - generic [aria-hidden] [ref=f3e15]: 
+              - text: Analytics
+          - listitem [ref=f3e16]:
+            - link "Fuel Logs" [ref=f3e17] [cursor=pointer]:
+              - /url: "#logs-section"
+              - generic [aria-hidden] [ref=f3e18]: 
+              - text: Fuel Logs
+        - generic [ref=f3e19]:
+          - button "Tariffs" [ref=f3e20] [cursor=pointer]:
+            - generic [aria-hidden] [ref=f3e21]: 
+            - text: Tariffs
+          - generic [ref=f3e22]:
+            - button "qa_features_1792789506268 (Admin)" [ref=f3e23] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f3e24]: 
+            - text:   
+          - text: 
+  - main [ref=f3e26]:
+    - generic [ref=f3e27]:
+      - generic [ref=f3e28]:
+        - paragraph [ref=f3e29]: Home energy overview • October 2026
+        - heading "Temporary Feature QA" [level=1] [ref=f3e30]
+        - paragraph [ref=f3e31]: Nairobi County • Multi-fuel energy, spend, and generation at a glance.
+      - generic [ref=f3e32]:
+        - button "Quick Log LPG" [ref=f3e33] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f3e34]: 
+          - text: Quick Log LPG
+        - button "Log Appliance Run" [ref=f3e35] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f3e36]: 
+          - text: Log Appliance Run
+        - button "Log Kerosene" [ref=f3e37] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f3e38]: 
+          - text: Log Kerosene
+        - button "Log Solar" [ref=f3e39] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f3e40]: 
+          - text: Log Solar
+        - button "Manage Appliances" [ref=f3e41] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f3e42]: 
+          - text: Manage Appliances
+    - region "Energy summary" [ref=f3e43]:
+      - article [ref=f3e44]:
+        - generic [ref=f3e46]:
+          - heading "Total Energy Consumed" [level=2] [ref=f3e48]
+          - paragraph [ref=f3e49]: 0 kWh
+          - paragraph [ref=f3e50]: Thermodynamic equivalent across all 4 fuels
+      - article [ref=f3e51]:
+        - generic [ref=f3e53]:
+          - generic [ref=f3e54]:
+            - heading "Total Utility Spend" [level=2] [ref=f3e55]
+            - generic [ref=f3e56]: This Month
+          - paragraph [ref=f3e57]: KES 0
+          - paragraph [ref=f3e58]: "Grid: 0% • Gas: 0% • Kerosene: 0%"
+      - article [ref=f3e59]:
+        - generic [ref=f3e61]:
+          - generic [ref=f3e62]:
+            - heading "Active 13kg Cylinder" [level=2] [ref=f3e63]
+            - generic [ref=f3e64]: None
+          - paragraph [ref=f3e65]: 0 kg (0%)
+          - progressbar "LPG cylinder remaining" [ref=f3e66]
+          - paragraph [ref=f3e67]: No active cylinder registered
+      - article [ref=f3e68]:
+        - generic [ref=f3e70]:
+          - generic [ref=f3e71]:
+            - heading "Solar Offset Harvest" [level=2] [ref=f3e72]
+            - generic [ref=f3e73]: Free Energy
+          - paragraph [ref=f3e74]: 0 kWh
+          - paragraph [ref=f3e75]: Avoided ~KES 0 in KPLC electricity tokens
+    - status [ref=f3e77]:
+      - generic [aria-hidden] [ref=f3e78]: 
+      - generic [ref=f3e79]:
+        - heading "LPG Cylinder Running Low" [level=2] [ref=f3e80]
+        - paragraph [ref=f3e81]: Active cylinder is at 0.0%. Order a replacement cylinder before mealtime depletion.
+    - region "Energy analytics" [ref=f3e82]:
+      - article [ref=f3e83]:
+        - generic [ref=f3e85]:
+          - generic [ref=f3e86]:
+            - generic [ref=f3e87]:
+              - heading "Energy consumption" [level=2] [ref=f3e88]
+              - paragraph [ref=f3e89]: Weekly normalized use · kWh equivalent
+            - generic [ref=f3e90]: No usage logged yet
+          - img "Weekly energy consumption across grid electricity, LPG gas, and solar harvest" [ref=f3e92]
+          - table [ref=f3e94]:
+            - caption [ref=f3e95]: Weekly Energy Consumption Data Summary in kWh
+            - rowgroup [ref=f3e96]:
+              - row [ref=f3e97]:
+                - columnheader "Week" [ref=f3e98]
+                - columnheader "Electricity" [ref=f3e99]
+                - columnheader "LPG" [ref=f3e100]
+                - columnheader "Solar" [ref=f3e101]
+            - rowgroup [ref=f3e102]:
+              - row [ref=f3e103]:
+                - cell "Week 1" [ref=f3e104]
+                - cell "0.0" [ref=f3e105]
+                - cell "0.0" [ref=f3e106]
+                - cell "0.0" [ref=f3e107]
+              - row [ref=f3e108]:
+                - cell "Week 2" [ref=f3e109]
+                - cell "0.0" [ref=f3e110]
+                - cell "0.0" [ref=f3e111]
+                - cell "0.0" [ref=f3e112]
+              - row [ref=f3e113]:
+                - cell "Week 3" [ref=f3e114]
+                - cell "0.0" [ref=f3e115]
+                - cell "0.0" [ref=f3e116]
+                - cell "0.0" [ref=f3e117]
+              - row [ref=f3e118]:
+                - cell "Week 4" [ref=f3e119]
+                - cell "0.0" [ref=f3e120]
+                - cell "0.0" [ref=f3e121]
+                - cell "0.0" [ref=f3e122]
+      - article [ref=f3e123]:
+        - generic [ref=f3e125]:
+          - generic [ref=f3e126]:
+            - generic [ref=f3e127]:
+              - heading "Energy spend mix" [level=2] [ref=f3e128]
+              - paragraph [ref=f3e129]: Share of household fuel costs
+            - generic [ref=f3e130]: Household mix
+          - img "Fuel expense distribution across energy sources" [ref=f3e132]
+          - table [ref=f3e134]:
+            - caption [ref=f3e135]: Proportional Fuel Expense Distribution
+            - rowgroup [ref=f3e136]:
+              - row [ref=f3e137]:
+                - columnheader "Fuel Type" [ref=f3e138]
+                - columnheader "Share (%)" [ref=f3e139]
+            - rowgroup [ref=f3e140]:
+              - row [ref=f3e141]:
+                - cell "Grid Electricity" [ref=f3e142]
+                - cell "0.0%" [ref=f3e143]
+              - row [ref=f3e144]:
+                - cell "LPG Cooking Gas" [ref=f3e145]
+                - cell "0.0%" [ref=f3e146]
+              - row [ref=f3e147]:
+                - cell "Domestic Kerosene" [ref=f3e148]
+                - cell "0.0%" [ref=f3e149]
+              - row [ref=f3e150]:
+                - cell "Solar Offset" [ref=f3e151]
+                - cell "0.0%" [ref=f3e152]
+          - generic [ref=f3e153]:
+            - heading "Fuel cost comparison (KES / kWh equivalent)" [level=3] [ref=f3e154]
+            - generic [ref=f3e155]:
+              - generic [ref=f3e185]:
+                - generic [ref=f3e186]:
+                  - generic [ref=f3e187]:
+                    - generic [aria-hidden] [ref=f3e188]: 
+                    - text: Solar PV Harvest
+                  - generic [ref=f3e189]: Zero Fuel Cost
+                - progressbar "Solar PV Harvest relative cost" [ref=f3e190]
+                - generic [ref=f3e192]:
+                  - generic [ref=f3e193]: Clean rooftop generation
+                  - generic [ref=f3e194]: KES 0.00 / kWh
+              - generic [ref=f3e195]:
+                - generic [ref=f3e196]:
+                  - generic [ref=f3e197]:
+                    - generic [aria-hidden] [ref=f3e198]: 
+                    - text: LPG Cooking Gas
+                  - generic [ref=f3e199]: High Thermal Efficiency
+                - progressbar "LPG Cooking Gas relative cost" [ref=f3e200]
+                - generic [ref=f3e202]:
+                  - generic [ref=f3e203]: ~12.8 kWh per kg conversion
+                  - generic [ref=f3e204]: KES 10.94 / kWh
+              - generic [ref=f3e205]:
+                - generic [ref=f3e206]:
+                  - generic [ref=f3e207]:
+                    - generic [aria-hidden] [ref=f3e208]: 
+                    - text: KPLC Grid Electricity
+                  - generic [ref=f3e209]: Domestic Baseline
+                - progressbar "KPLC Grid Electricity relative cost" [ref=f3e210]
+                - generic [ref=f3e212]:
+                  - generic [ref=f3e213]: Direct metered grid tokens
+                  - generic [ref=f3e214]: KES 28.00 / kWh
+              - generic [ref=f3e215]:
+                - generic [ref=f3e216]:
+                  - generic [ref=f3e217]:
+                    - generic [aria-hidden] [ref=f3e218]: 
+                    - text: Domestic Kerosene
+                  - generic [ref=f3e219]: High Expense Vector
+                - progressbar "Domestic Kerosene relative cost" [ref=f3e220]
+                - generic [ref=f3e222]:
+                  - generic [ref=f3e223]: Low wick burner efficiency
+                  - generic [ref=f3e224]: KES 15.46 / kWh
+    - region [ref=f3e156]:
+      - generic [ref=f3e157]:
+        - generic [ref=f3e158]:
+          - heading "Energy report" [level=2] [ref=f3e159]
+          - paragraph [ref=f3e160]: Review energy, cost, trends, and recommendations for a selected date range.
+        - generic [ref=f3e161]:
+          - generic [ref=f3e162]:
+            - generic [ref=f3e163]: Timeframe
+            - combobox "Timeframe" [ref=f3e164]:
+              - option "This week"
+              - option "This month" [selected]
+              - option "Custom date range"
+          - button "Generate report" [ref=f3e166] [cursor=pointer]
+        - status [ref=f3e167]: Report generated for 2026-10-01 through 2026-10-31.
+        - generic [ref=f3e225]:
+          - generic [ref=f3e226]:
+            - heading "2026-10-01 through 2026-10-31" [level=3] [ref=f3e227]
+            - generic [ref=f3e228]: No entries in this period
+          - generic [ref=f3e229]:
+            - generic [ref=f3e231]:
+              - generic [ref=f3e232]: Total energy
+              - generic [ref=f3e233]: 0 kWh
+            - generic [ref=f3e235]:
+              - generic [ref=f3e236]: Total cost
+              - generic [ref=f3e237]: KES 0.00
+          - generic [ref=f3e238]:
+            - generic [ref=f3e239]:
+              - img "Daily household energy by source for the selected report period" [ref=f3e241]
+              - table [ref=f3e243]:
+                - caption [ref=f3e244]: Daily household energy report in kWh
+                - rowgroup [ref=f3e245]:
+                  - row [ref=f3e246]:
+                    - columnheader "Date" [ref=f3e247]
+                    - columnheader "Electricity" [ref=f3e248]
+                    - columnheader "LPG" [ref=f3e249]
+                    - columnheader "Kerosene" [ref=f3e250]
+                    - columnheader "Solar" [ref=f3e251]
+                - rowgroup
+            - generic [ref=f3e252]:
+              - table [ref=f3e254]:
+                - caption [ref=f3e255]: Source cost comparison
+                - rowgroup [ref=f3e256]:
+                  - row [ref=f3e257]:
+                    - columnheader "Source" [ref=f3e258]
+                    - columnheader "Quantity" [ref=f3e259]
+                    - columnheader "Energy" [ref=f3e260]
+                    - columnheader "Cost" [ref=f3e261]
+                - rowgroup [ref=f3e262]:
+                  - row [ref=f3e263]:
+                    - cell "Grid electricity" [ref=f3e264]
+                    - cell "0 kWh" [ref=f3e265]
+                    - cell "0 kWh" [ref=f3e266]
+                    - cell "KES 0.00" [ref=f3e267]
+                  - row [ref=f3e268]:
+                    - cell "LPG" [ref=f3e269]
+                    - cell "0 kg" [ref=f3e270]
+                    - cell "0 kWh" [ref=f3e271]
+                    - cell "KES 0.00" [ref=f3e272]
+                  - row [ref=f3e273]:
+                    - cell "Kerosene" [ref=f3e274]
+                    - cell "0 L" [ref=f3e275]
+                    - cell "0 kWh" [ref=f3e276]
+                    - cell "KES 0.00" [ref=f3e277]
+                  - row [ref=f3e278]:
+                    - cell "Solar" [ref=f3e279]
+                    - cell "0 kWh" [ref=f3e280]
+                    - cell "0 kWh" [ref=f3e281]
+                    - cell "KES 0.00" [ref=f3e282]
+              - status [ref=f3e284]:
+                - heading "LPG Cylinder Running Low" [level=3] [ref=f3e285]
+                - paragraph [ref=f3e286]: Active cylinder is at 0.0%. Order a replacement cylinder before mealtime depletion.
+    - generic [ref=f3e169]:
+      - generic [ref=f3e170]:
+        - heading "Recent Multi-Source Energy Logs" [level=2] [ref=f3e171]
+        - generic [ref=f3e172]: Real-time normalized records
+        - text: 
+      - table [ref=f3e174]:
+        - caption [ref=f3e175]: Recent Multi-Source Energy Logs
+        - rowgroup [ref=f3e176]:
+          - row [ref=f3e177]:
+            - columnheader "Date & Time" [ref=f3e178]
+            - columnheader "Energy Vector" [ref=f3e179]
+            - columnheader "Input Measurement" [ref=f3e180]
+            - columnheader "Normalized Energy (kWh)" [ref=f3e181]
+        - rowgroup [ref=f3e182]:
+          - row [ref=f3e287]:
+            - cell "No recent fuel logs recorded yet." [ref=f3e288]
+  - dialog [active] [ref=f3e289]:
+    - generic [ref=f3e290]:
+      - generic [ref=f3e291]:
+        - heading "Manage appliance profiles" [level=2] [ref=f3e292]
+        - button "Close appliance management" [ref=f3e293] [cursor=pointer]
+      - generic [ref=f3e294]:
+        - generic [ref=f3e295]:
+          - generic [ref=f3e296]:
+            - generic [ref=f3e297]:
+              - generic [ref=f3e298]: Appliance name
+              - textbox "Appliance name" [ref=f3e299]
+            - generic [ref=f3e300]:
+              - generic [ref=f3e301]: Category
+              - combobox "Category" [ref=f3e302]: OTHER
+            - generic [ref=f3e303]:
+              - generic [ref=f3e304]: Rated wattage (W)
+              - spinbutton "Rated wattage (W)" [ref=f3e305]
+            - generic [ref=f3e306]:
+              - generic [ref=f3e307]: Default duty cycle (0 to 1)
+              - spinbutton "Default duty cycle (0 to 1)" [ref=f3e308]: "1"
+          - button "Add appliance" [ref=f3e310] [cursor=pointer]
+          - status
+        - heading "Registered appliances" [level=3] [ref=f3e311]
+        - table [ref=f3e313]:
+          - caption [ref=f3e314]: Registered appliance profiles and management actions
+          - rowgroup [ref=f3e315]:
+            - row [ref=f3e316]:
+              - columnheader "Name" [ref=f3e317]
+              - columnheader "Category" [ref=f3e318]
+              - columnheader "Wattage" [ref=f3e319]
+              - columnheader "Duty cycle" [ref=f3e320]
+              - columnheader "Actions" [ref=f3e321]
+          - rowgroup [ref=f3e322]:
+            - row [ref=f3e323]:
+              - cell "UI QA kettle updated" [ref=f3e324]
+              - cell "COOKING" [ref=f3e325]
+              - cell "1900 W" [ref=f3e326]
+              - cell "1.00" [ref=f3e327]
+              - cell [ref=f3e328]:
+                - button "Edit UI QA kettle updated" [ref=f3e329] [cursor=pointer]: Edit
+                - button "Delete UI QA kettle updated" [ref=f3e330] [cursor=pointer]: Delete
+  - text:         

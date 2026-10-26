@@ -1,0 +1,11 @@
+[     380ms] [ERROR] Failed to load resource: the server responded with a status of 500 (INTERNAL SERVER ERROR) @ http://127.0.0.1:5173/api/v1/auth/me:0
+[   71119ms] [ERROR] Failed to load resource: the server responded with a status of 500 (INTERNAL SERVER ERROR) @ http://127.0.0.1:5173/api/v1/analytics/dashboard:0
+[   71183ms] [ERROR] Failed to load resource: the server responded with a status of 500 (INTERNAL SERVER ERROR) @ http://127.0.0.1:5173/api/v1/analytics/parity:0
+[   71225ms] [ERROR] Failed to load resource: the server responded with a status of 500 (INTERNAL SERVER ERROR) @ http://127.0.0.1:5173/api/v1/appliances:0
+[   71225ms] [ERROR] Failed to load appliance profiles: Error: Appliance list request failed (500).
+    at loadAppliances (http://127.0.0.1:5173/static/js/app.js:1033:13)
+    at async HTMLFormElement.<anonymous> (http://127.0.0.1:5173/static/js/app.js:1381:11) @ http://127.0.0.1:5173/static/js/app.js:1058
+[   71276ms] [ERROR] Failed to load resource: the server responded with a status of 500 (INTERNAL SERVER ERROR) @ http://127.0.0.1:5173/api/v1/analytics/report?start_date=2026-10-01&end_date=2026-10-31:0
+[   71278ms] [ERROR] Failed to generate energy report: Error: Internal server error
+    at loadEnergyReport (http://127.0.0.1:5173/static/js/app.js:427:13)
+    at async HTMLFormElement.<anonymous> (http://127.0.0.1:5173/static/js/app.js:1382:11) @ http://127.0.0.1:5173/static/js/app.js:430

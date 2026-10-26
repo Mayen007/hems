@@ -1,0 +1,13 @@
+[     537ms] [ERROR] Failed to load resource: the server responded with a status of 401 (UNAUTHORIZED) @ http://127.0.0.1:5021/api/v1/auth/login:0
+[     608ms] [ERROR] Failed to load resource: the server responded with a status of 401 (UNAUTHORIZED) @ http://127.0.0.1:5021/api/v1/analytics/dashboard:0
+[     608ms] [WARNING] Unauthorized, attempting automatic guest login... @ http://127.0.0.1:5021/static/js/app.js:39
+[     639ms] [ERROR] Failed to load resource: the server responded with a status of 401 (UNAUTHORIZED) @ http://127.0.0.1:5021/api/v1/auth/login:0
+[     731ms] [ERROR] Failed to load resource: the server responded with a status of 401 (UNAUTHORIZED) @ http://127.0.0.1:5021/api/v1/analytics/dashboard:0
+[     748ms] [ERROR] Failed to load resource: the server responded with a status of 401 (UNAUTHORIZED) @ http://127.0.0.1:5021/api/v1/analytics/parity:0
+[     748ms] [WARNING] Unauthorized, attempting automatic guest login... @ http://127.0.0.1:5021/static/js/app.js:39
+[     769ms] [ERROR] Failed to load resource: the server responded with a status of 401 (UNAUTHORIZED) @ http://127.0.0.1:5021/api/v1/auth/login:0
+[     797ms] [ERROR] Failed to load resource: the server responded with a status of 401 (UNAUTHORIZED) @ http://127.0.0.1:5021/api/v1/analytics/parity:0
+[     830ms] [ERROR] Failed to load resource: the server responded with a status of 401 (UNAUTHORIZED) @ http://127.0.0.1:5021/api/v1/appliances:0
+[     830ms] [WARNING] Unauthorized, attempting automatic guest login... @ http://127.0.0.1:5021/static/js/app.js:39
+[     857ms] [ERROR] Failed to load resource: the server responded with a status of 401 (UNAUTHORIZED) @ http://127.0.0.1:5021/api/v1/auth/login:0
+[     880ms] [ERROR] Failed to load resource: the server responded with a status of 401 (UNAUTHORIZED) @ http://127.0.0.1:5021/api/v1/appliances:0

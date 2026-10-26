@@ -1,0 +1,187 @@
+- generic [active] [ref=f9e1]:
+  - banner [ref=f9e2]:
+    - generic [ref=f9e3]:
+      - link "HEMS Kenya home" [ref=f9e4] [cursor=pointer]:
+        - /url: /
+        - generic [aria-hidden] [ref=f9e5]: 
+        - generic [ref=f9e6]:
+          - text: HEMS Kenya
+          - generic [ref=f9e7]: Energy Intelligence
+      - generic [ref=f9e8]:
+        - list [ref=f9e9]:
+          - listitem [ref=f9e10]:
+            - link "Overview" [ref=f9e11] [cursor=pointer]:
+              - /url: "#dashboard-hero"
+              - generic [aria-hidden] [ref=f9e12]: 
+              - text: Overview
+          - listitem [ref=f9e13]:
+            - link "Analytics" [ref=f9e14] [cursor=pointer]:
+              - /url: "#analytics-section"
+              - generic [aria-hidden] [ref=f9e15]: 
+              - text: Analytics
+          - listitem [ref=f9e16]:
+            - link "Fuel Logs" [ref=f9e17] [cursor=pointer]:
+              - /url: "#logs-section"
+              - generic [aria-hidden] [ref=f9e18]: 
+              - text: Fuel Logs
+          - listitem [ref=f9e19]:
+            - link "Reports" [ref=f9e20] [cursor=pointer]:
+              - /url: "#reports-section"
+              - generic [aria-hidden] [ref=f9e21]: 
+              - text: Reports
+        - generic [ref=f9e22]:
+          - button "Tariffs" [ref=f9e23] [cursor=pointer]:
+            - generic [aria-hidden] [ref=f9e24]: 
+            - text: Tariffs
+          - generic [ref=f9e25]:
+            - button "abdijabar (Admin)" [ref=f9e26] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f9e27]: 
+            - text:   
+          - text: 
+  - main [ref=f9e29]:
+    - generic [ref=f9e30]:
+      - generic [ref=f9e31]:
+        - paragraph [ref=f9e32]: Home energy overview • October 2026
+        - heading "Abdullahi Household" [level=1] [ref=f9e33]
+        - paragraph [ref=f9e34]: Nairobi County • Multi-fuel energy, spend, and generation at a glance.
+      - generic [ref=f9e35]:
+        - button "Quick Log LPG" [ref=f9e36] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f9e37]: 
+          - text: Quick Log LPG
+        - button "Log Appliance Run" [ref=f9e38] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f9e39]: 
+          - text: Log Appliance Run
+        - button "Log Kerosene" [ref=f9e40] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f9e41]: 
+          - text: Log Kerosene
+        - button "Log Solar" [ref=f9e42] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f9e43]: 
+          - text: Log Solar
+        - button "Manage Appliances" [ref=f9e44] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f9e45]: 
+          - text: Manage Appliances
+    - region "Energy summary" [ref=f9e46]:
+      - article [ref=f9e47]:
+        - generic [ref=f9e49]:
+          - heading "Total Energy Consumed" [level=2] [ref=f9e51]
+          - paragraph [ref=f9e52]: 0 kWh
+          - paragraph [ref=f9e53]: Thermodynamic equivalent across all 4 fuels
+      - article [ref=f9e54]:
+        - generic [ref=f9e56]:
+          - generic [ref=f9e57]:
+            - heading "Total Utility Spend" [level=2] [ref=f9e58]
+            - generic [ref=f9e59]: This Month
+          - paragraph [ref=f9e60]: KES 0
+          - paragraph [ref=f9e61]: "Grid: 0% • Gas: 0% • Kerosene: 0%"
+      - article [ref=f9e62]:
+        - generic [ref=f9e64]:
+          - generic [ref=f9e65]:
+            - heading "Active 13kg Cylinder" [level=2] [ref=f9e66]
+            - generic [ref=f9e67]: Total Gas
+          - paragraph [ref=f9e68]: 6.9 kg (53.1%)
+          - progressbar "LPG cylinder remaining" [ref=f9e69]
+          - paragraph [ref=f9e70]: "Tare: 15.2 kg • 53.1% full"
+      - article [ref=f9e71]:
+        - generic [ref=f9e73]:
+          - generic [ref=f9e74]:
+            - heading "Solar Offset Harvest" [level=2] [ref=f9e75]
+            - generic [ref=f9e76]: Free Energy
+          - paragraph [ref=f9e77]: 0 kWh
+          - paragraph [ref=f9e78]: Avoided ~KES 0 in KPLC electricity tokens
+    - region "Energy analytics" [ref=f9e79]:
+      - article [ref=f9e80]:
+        - generic [ref=f9e82]:
+          - generic [ref=f9e83]:
+            - generic [ref=f9e84]:
+              - heading "Energy consumption" [level=2] [ref=f9e85]
+              - paragraph [ref=f9e86]: Weekly normalized use · kWh equivalent
+            - generic [ref=f9e87]: No usage logged yet
+          - img "Weekly energy consumption across grid electricity, LPG gas, and solar harvest" [ref=f9e89]
+          - table [ref=f9e91]:
+            - caption [ref=f9e92]: Weekly Energy Consumption Data Summary in kWh
+            - rowgroup [ref=f9e93]:
+              - row [ref=f9e94]:
+                - columnheader "Week" [ref=f9e95]
+                - columnheader "Electricity" [ref=f9e96]
+                - columnheader "LPG" [ref=f9e97]
+                - columnheader "Solar" [ref=f9e98]
+            - rowgroup [ref=f9e99]:
+              - row [ref=f9e100]:
+                - cell "Week 1" [ref=f9e101]
+                - cell "0.0" [ref=f9e102]
+                - cell "0.0" [ref=f9e103]
+                - cell "0.0" [ref=f9e104]
+              - row [ref=f9e105]:
+                - cell "Week 2" [ref=f9e106]
+                - cell "0.0" [ref=f9e107]
+                - cell "0.0" [ref=f9e108]
+                - cell "0.0" [ref=f9e109]
+              - row [ref=f9e110]:
+                - cell "Week 3" [ref=f9e111]
+                - cell "0.0" [ref=f9e112]
+                - cell "0.0" [ref=f9e113]
+                - cell "0.0" [ref=f9e114]
+              - row [ref=f9e115]:
+                - cell "Week 4" [ref=f9e116]
+                - cell "0.0" [ref=f9e117]
+                - cell "0.0" [ref=f9e118]
+                - cell "0.0" [ref=f9e119]
+      - article [ref=f9e120]:
+        - generic [ref=f9e122]:
+          - generic [ref=f9e123]:
+            - generic [ref=f9e124]:
+              - heading "Energy spend mix" [level=2] [ref=f9e125]
+              - paragraph [ref=f9e126]: Share of household fuel costs
+            - generic [ref=f9e127]: No spend logged yet
+          - img "Fuel expense distribution across energy sources" [ref=f9e129]
+          - table [ref=f9e131]:
+            - caption [ref=f9e132]: Proportional Fuel Expense Distribution
+            - rowgroup [ref=f9e133]:
+              - row [ref=f9e134]:
+                - columnheader "Fuel Type" [ref=f9e135]
+                - columnheader "Share (%)" [ref=f9e136]
+            - rowgroup [ref=f9e137]:
+              - row [ref=f9e138]:
+                - cell "Grid Electricity" [ref=f9e139]
+                - cell "0.0%" [ref=f9e140]
+              - row [ref=f9e141]:
+                - cell "LPG Cooking Gas" [ref=f9e142]
+                - cell "0.0%" [ref=f9e143]
+              - row [ref=f9e144]:
+                - cell "Domestic Kerosene" [ref=f9e145]
+                - cell "0.0%" [ref=f9e146]
+              - row [ref=f9e147]:
+                - cell "Solar Offset" [ref=f9e148]
+                - cell "0.0%" [ref=f9e149]
+          - heading "Fuel cost comparison (KES / kWh equivalent)" [level=3] [ref=f9e151]
+    - region [ref=f9e153]:
+      - generic [ref=f9e154]:
+        - generic [ref=f9e155]:
+          - heading "Energy report" [level=2] [ref=f9e156]
+          - paragraph [ref=f9e157]: Review energy, cost, trends, and recommendations for a selected date range.
+        - generic [ref=f9e158]:
+          - generic [ref=f9e159]:
+            - generic [ref=f9e160]: Timeframe
+            - combobox "Timeframe" [ref=f9e161]:
+              - option "This week"
+              - option "This month" [selected]
+              - option "Custom date range"
+          - button "Generate report" [ref=f9e163] [cursor=pointer]
+        - status [ref=f9e164]: Sign in to generate a household report.
+    - generic [ref=f9e166]:
+      - generic [ref=f9e167]:
+        - heading "Recent Multi-Source Energy Logs" [level=2] [ref=f9e168]
+        - generic [ref=f9e169]: Real-time normalized records
+        - text: 
+      - table [ref=f9e171]:
+        - caption [ref=f9e172]: Recent Multi-Source Energy Logs
+        - rowgroup [ref=f9e173]:
+          - row [ref=f9e174]:
+            - columnheader "Date & Time" [ref=f9e175]
+            - columnheader "Energy Vector" [ref=f9e176]
+            - columnheader "Input Measurement" [ref=f9e177]
+            - columnheader "Normalized Energy (kWh)" [ref=f9e178]
+        - rowgroup [ref=f9e179]:
+          - row [ref=f9e180]:
+            - cell "Loading energy records..." [ref=f9e181]
+  - text:        

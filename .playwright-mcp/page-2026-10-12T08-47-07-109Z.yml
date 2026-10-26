@@ -1,0 +1,147 @@
+- generic [ref=f1e1]:
+  - banner [ref=f1e2]:
+    - generic [ref=f1e3]:
+      - link "HEMS Kenya home" [ref=f1e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f1e7]:
+          - text: HEMS Kenya
+          - generic [ref=f1e8]: Energy Intelligence
+      - generic [ref=f1e9]:
+        - generic [ref=f1e10]: Online & Synced
+        - button "Tariffs" [ref=f1e11] [cursor=pointer]
+        - 'generic "Current User: Abdijabar (Admin)" [ref=f1e14] [cursor=pointer]': Abdijabar (Admin)
+  - main [ref=f1e17]:
+    - generic [ref=f1e18]:
+      - generic [ref=f1e19]:
+        - paragraph [ref=f1e20]: Home energy overview • October 2026
+        - heading "Abdullahi Household" [level=1] [ref=f1e21]
+        - paragraph [ref=f1e22]: Nairobi County • Multi-fuel energy, spend, and generation at a glance.
+      - generic [ref=f1e23]:
+        - button "Quick Log LPG" [ref=f1e24] [cursor=pointer]
+        - button "Log Appliance Run" [ref=f1e27] [cursor=pointer]
+        - button "Log Kerosene" [ref=f1e30] [cursor=pointer]
+        - button "Log Solar" [ref=f1e33] [cursor=pointer]
+    - region "Energy summary" [ref=f1e36]:
+      - article [ref=f1e37]:
+        - generic [ref=f1e39]:
+          - generic [ref=f1e40]:
+            - heading "Total Energy Consumed" [level=2] [ref=f1e41]
+            - generic [ref=f1e42]: "-8.4% vs Sep"
+          - paragraph [ref=f1e43]: "-- kWh"
+          - paragraph [ref=f1e44]: Thermodynamic equivalent across all 4 fuels
+      - article [ref=f1e45]:
+        - generic [ref=f1e47]:
+          - generic [ref=f1e48]:
+            - heading "Total Utility Spend" [level=2] [ref=f1e49]
+            - generic [ref=f1e50]: This Month
+          - paragraph [ref=f1e51]: KES --
+          - paragraph [ref=f1e52]: "Grid: ~49% • Gas: ~32% • Kerosene: ~10%"
+      - article [ref=f1e53]:
+        - generic [ref=f1e55]:
+          - generic [ref=f1e56]:
+            - heading "Active 13kg Cylinder" [level=2] [ref=f1e57]
+            - generic [ref=f1e58]: Total Gas
+          - paragraph [ref=f1e59]: "-- kg"
+          - progressbar "LPG cylinder remaining" [ref=f1e60]
+          - paragraph [ref=f1e61]: "Tare: 15.20 kg • Estimated 14 days remaining"
+      - article [ref=f1e62]:
+        - generic [ref=f1e64]:
+          - generic [ref=f1e65]:
+            - heading "Solar Offset Harvest" [level=2] [ref=f1e66]
+            - generic [ref=f1e67]: Free Energy
+          - paragraph [ref=f1e68]: "-- kWh"
+          - paragraph [ref=f1e69]: Avoided ~KES 728 in KPLC electricity tokens
+    - region "Energy analytics" [ref=f1e70]:
+      - article [ref=f1e71]:
+        - generic [ref=f1e73]:
+          - generic [ref=f1e74]:
+            - heading "Weekly Normalized Consumption Trend (kWh)" [level=2] [ref=f1e75]
+            - generic [ref=f1e76]: October 2026
+          - img "Weekly energy consumption across grid electricity, LPG gas, and solar harvest" [ref=f1e78]
+          - table [ref=f1e80]:
+            - caption [ref=f1e81]: Weekly Energy Consumption Data Summary in kWh
+            - rowgroup [ref=f1e82]:
+              - row [ref=f1e83]:
+                - columnheader "Week" [ref=f1e84]
+                - columnheader "Electricity" [ref=f1e85]
+                - columnheader "LPG" [ref=f1e86]
+                - columnheader "Solar" [ref=f1e87]
+            - rowgroup [ref=f1e88]:
+              - row [ref=f1e89]:
+                - cell "Week 1" [ref=f1e90]
+                - cell "18.5" [ref=f1e91]
+                - cell "32.0" [ref=f1e92]
+                - cell "6.0" [ref=f1e93]
+              - row [ref=f1e94]:
+                - cell "Week 2" [ref=f1e95]
+                - cell "21.0" [ref=f1e96]
+                - cell "36.5" [ref=f1e97]
+                - cell "7.5" [ref=f1e98]
+              - row [ref=f1e99]:
+                - cell "Week 3" [ref=f1e100]
+                - cell "19.5" [ref=f1e101]
+                - cell "34.0" [ref=f1e102]
+                - cell "6.2" [ref=f1e103]
+              - row [ref=f1e104]:
+                - cell "Week 4" [ref=f1e105]
+                - cell "22.0" [ref=f1e106]
+                - cell "38.0" [ref=f1e107]
+                - cell "8.0" [ref=f1e108]
+      - article [ref=f1e109]:
+        - generic [ref=f1e111]:
+          - heading "Fuel Expense Profile (%)" [level=2] [ref=f1e112]
+          - img "Fuel expense distribution across energy sources" [ref=f1e114]
+          - table [ref=f1e116]:
+            - caption [ref=f1e117]: Proportional Fuel Expense Distribution
+            - rowgroup [ref=f1e118]:
+              - row [ref=f1e119]:
+                - columnheader "Fuel Type" [ref=f1e120]
+                - columnheader "Share (%)" [ref=f1e121]
+            - rowgroup [ref=f1e122]:
+              - row [ref=f1e123]:
+                - cell "Grid Electricity" [ref=f1e124]
+                - cell "49.4%" [ref=f1e125]
+              - row [ref=f1e126]:
+                - cell "LPG Cooking Gas" [ref=f1e127]
+                - cell "32.3%" [ref=f1e128]
+              - row [ref=f1e129]:
+                - cell "Domestic Kerosene" [ref=f1e130]
+                - cell "10.0%" [ref=f1e131]
+              - row [ref=f1e132]:
+                - cell "Solar Offset" [ref=f1e133]
+                - cell "8.3%" [ref=f1e134]
+          - heading "Kenyan Fuel Parity (KES/kWh-Equiv)" [level=3] [ref=f1e136]
+    - generic [ref=f1e139]:
+      - generic [ref=f1e140]:
+        - heading "Recent Multi-Source Energy Logs" [level=2] [ref=f1e141]
+        - generic [ref=f1e142]: Real-time normalized records
+      - table [ref=f1e144]:
+        - caption [ref=f1e145]: Recent Multi-Source Energy Logs
+        - rowgroup [ref=f1e146]:
+          - row [ref=f1e147]:
+            - columnheader "Date" [ref=f1e148]
+            - columnheader "Energy Vector" [ref=f1e149]
+            - columnheader "Input Measurement" [ref=f1e150]
+            - columnheader "Normalized Energy (kWh)" [ref=f1e151]
+        - rowgroup [ref=f1e152]:
+          - row [ref=f1e153]:
+            - cell "Loading energy records..." [ref=f1e154]
+  - dialog [active] [ref=f1e155]:
+    - generic [ref=f1e156]:
+      - generic [ref=f1e157]:
+        - heading "Configure Kenyan Utility Tariffs" [level=2] [ref=f1e158]
+        - button "Close tariffs dialog" [ref=f1e161] [cursor=pointer]
+      - generic [ref=f1e162]:
+        - generic [ref=f1e163]:
+          - generic [ref=f1e164]:
+            - generic [ref=f1e165]: KPLC Grid Electricity (KES / kWh)
+            - spinbutton "KPLC Grid Electricity (KES / kWh)" [ref=f1e166]: "28.00"
+          - generic [ref=f1e167]:
+            - generic [ref=f1e168]: LPG Retail Price (KES / kg)
+            - spinbutton "LPG Retail Price (KES / kg)" [ref=f1e169]: "140.00"
+          - generic [ref=f1e170]:
+            - generic [ref=f1e171]: Domestic Kerosene (KES / Liter)
+            - spinbutton "Domestic Kerosene (KES / Liter)" [ref=f1e172]: "160.00"
+        - generic [ref=f1e173]:
+          - button "Cancel" [ref=f1e174] [cursor=pointer]
+          - button "Update Tariffs" [ref=f1e175] [cursor=pointer]

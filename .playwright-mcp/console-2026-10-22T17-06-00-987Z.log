@@ -1,0 +1,17 @@
+[     525ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:5021/api/v1/auth/login:0
+[     534ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:5021/api/v1/analytics/dashboard:0
+[     534ms] [ERROR] Failed to load dashboard: TypeError: Failed to fetch
+    at apiFetch (http://127.0.0.1:5021/static/js/app.js:38:21)
+    at loadDashboard (http://127.0.0.1:5021/static/js/app.js:119:23)
+    at HTMLDocument.<anonymous> (http://127.0.0.1:5021/static/js/app.js:762:9) @ http://127.0.0.1:5021/static/js/app.js:140
+[     536ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:5021/favicon.ico:0
+[     538ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:5021/api/v1/analytics/parity:0
+[     538ms] [ERROR] TypeError: Failed to fetch
+    at apiFetch (http://127.0.0.1:5021/static/js/app.js:38:21)
+    at loadFuelParity (http://127.0.0.1:5021/static/js/app.js:148:23)
+    at HTMLDocument.<anonymous> (http://127.0.0.1:5021/static/js/app.js:763:9) @ http://127.0.0.1:5021/static/js/app.js:187
+[     545ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:5021/api/v1/appliances:0
+[     545ms] [ERROR] TypeError: Failed to fetch
+    at apiFetch (http://127.0.0.1:5021/static/js/app.js:38:21)
+    at setupApplianceForm (http://127.0.0.1:5021/static/js/app.js:584:23)
+    at HTMLDocument.<anonymous> (http://127.0.0.1:5021/static/js/app.js:765:9) @ http://127.0.0.1:5021/static/js/app.js:597
