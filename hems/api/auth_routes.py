@@ -88,7 +88,7 @@ def login():
             "household_name": user["household_name"]
         }
     }))
-    resp.set_cookie("hems_token", token, httponly=True, samesite="Lax")
+    resp.set_cookie("hems_token", token, httponly=True, samesite="Lax", max_age=7 * 24 * 60 * 60)
     return resp, 200
 
 @auth_bp.route("/me", methods=["GET"])

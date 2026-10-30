@@ -35,7 +35,6 @@ CREATE TABLE IF NOT EXISTS appliances (
     name TEXT NOT NULL,
     category TEXT DEFAULT 'OTHER',
     rated_wattage REAL NOT NULL,
-    default_duty_cycle REAL NOT NULL DEFAULT 1.00,
     is_active INTEGER NOT NULL DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (household_id) REFERENCES households(id) ON DELETE CASCADE
@@ -107,25 +106,9 @@ CREATE TABLE IF NOT EXISTS solar_logs (
     FOREIGN KEY (solar_system_id) REFERENCES solar_systems(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS daily_energy_summary (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    household_id INTEGER NOT NULL,
-    summary_date TEXT NOT NULL,
-    electricity_kwh REAL NOT NULL DEFAULT 0.000,
-    lpg_kwh REAL NOT NULL DEFAULT 0.000,
-    kerosene_kwh REAL NOT NULL DEFAULT 0.000,
-    solar_kwh REAL NOT NULL DEFAULT 0.000,
-    total_kwh REAL NOT NULL DEFAULT 0.000,
-    total_cost_kes REAL NOT NULL DEFAULT 0.00,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (household_id) REFERENCES households(id) ON DELETE CASCADE,
-    UNIQUE(household_id, summary_date)
-);
-
 CREATE INDEX IF NOT EXISTS idx_user_household ON users(household_id);
 CREATE INDEX IF NOT EXISTS idx_appliance_household ON appliances(household_id);
 CREATE INDEX IF NOT EXISTS idx_app_log_date ON appliance_logs(log_date);
 CREATE INDEX IF NOT EXISTS idx_lpg_date ON lpg_readings(log_date);
 CREATE INDEX IF NOT EXISTS idx_kero_date ON kerosene_logs(log_date);
 CREATE INDEX IF NOT EXISTS idx_solar_date ON solar_logs(log_date);
-CREATE INDEX IF NOT EXISTS idx_summary_date ON daily_energy_summary(summary_date);

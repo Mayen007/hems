@@ -26,17 +26,8 @@ async function apiFetch(url, options = {}) {
   return res;
 }
 
-function hasAuthCookie() {
-  return document.cookie.split(';').some((cookie) => cookie.trim().startsWith('hems_token='));
-}
-
 // Check existing authenticated session on page load
 async function checkAuthSession() {
-  if (!hasAuthCookie()) {
-    updateAuthUI(null);
-    return null;
-  }
-
   try {
     const res = await fetch('/api/v1/auth/me', {
       credentials: 'include',

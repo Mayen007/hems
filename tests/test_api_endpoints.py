@@ -110,6 +110,28 @@ def test_appliance_inventory_and_batch_log(client):
     assert data["total_electricity_kwh"] > 0
     assert data["estimated_cost_kes"] > 0
 
+    # 3. Reject duplicate appliance_ids in a single batch
+    duplicate_payload = {
+        "log_date": "2026-10-09",
+        "entries": [
+            {"appliance_id": appliances[0]["id"], "runtime_hours": 2.0},
+            {"appliance_id": appliances[0]["id"], "runtime_hours": 4.0}
+        ]
+    }
+    dup_res = client.post("/api/v1/appliances/batch-log", json=duplicate_payload, headers=headers)
+    assert dup_res.status_code == 400
+    assert "Duplicate appliance_id" in dup_res.get_json()["message"]
+
+    # 4. Later submission for same date succeeds as an upsert correction
+    correction_payload = {
+        "log_date": "2026-10-09",
+        "entries": [
+            {"appliance_id": appliances[0]["id"], "runtime_hours": 12.0}
+        ]
+    }
+    correct_res = client.post("/api/v1/appliances/batch-log", json=correction_payload, headers=headers)
+    assert correct_res.status_code == 200
+
 
 def test_appliance_profile_can_be_updated_and_validated(client):
     token = get_auth_token(client)
@@ -119,7 +141,6 @@ def test_appliance_profile_can_be_updated_and_validated(client):
         "name": "Updated refrigerator",
         "category": "REFRIGERATION",
         "rated_wattage": 250,
-        "default_duty_cycle": 0.6,
     }
 
     response = client.put(
@@ -133,7 +154,6 @@ def test_appliance_profile_can_be_updated_and_validated(client):
     saved = client.get("/api/v1/appliances", headers=headers).get_json()["data"][0]
     assert saved["name"] == updated["name"]
     assert saved["rated_wattage"] == updated["rated_wattage"]
-    assert saved["default_duty_cycle"] == updated["default_duty_cycle"]
 
     invalid = client.put(
         f"/api/v1/appliances/{appliance['id']}",
@@ -306,7 +326,8 @@ def test_saved_readings_match_dashboard_hand_calculations(client):
         "entries": [{"appliance_id": appliance["id"], "runtime_hours": 2}]
     }, headers=headers)
     assert appliance_response.status_code == 200
-    assert appliance_response.get_json()["total_electricity_kwh"] == 0.22
+    # 220W * 2h / 1000 = 0.44 kWh  (no duty cycle)
+    assert appliance_response.get_json()["total_electricity_kwh"] == 0.44
 
     lpg_response = client.post("/api/v1/fuel-logs/lpg", json={
         "log_date": log_date,
@@ -330,9 +351,10 @@ def test_saved_readings_match_dashboard_hand_calculations(client):
     assert solar_response.get_json()["computed_kwh"] == 3.2
 
     dashboard = client.get("/api/v1/analytics/dashboard", headers=headers).get_json()["data"]
-    assert dashboard["summary"]["total_energy_kwh"] == 27.91
-    assert dashboard["summary"]["total_cost_kes"] == 421.16
-    assert dashboard["source_breakdown"]["grid_electricity"]["kwh"] == 0.22
+    assert dashboard["summary"]["total_energy_kwh"] == 24.93   # electricity + LPG + kerosene only
+    assert dashboard["summary"]["solar_generated_kwh"] == 3.2
+    assert dashboard["summary"]["total_cost_kes"] == 427.32
+    assert dashboard["source_breakdown"]["grid_electricity"]["kwh"] == 0.44
     assert dashboard["source_breakdown"]["lpg"]["kwh"] == 8.96
     assert dashboard["source_breakdown"]["kerosene"]["kwh"] == 15.53
     assert dashboard["source_breakdown"]["solar"]["kwh"] == 3.2
@@ -383,8 +405,10 @@ def test_selected_date_report_filters_sources_and_trends(client):
     assert data["summary"] == {
         "start_date": today_string,
         "end_date": today_string,
-        "total_energy_kwh": 36.72,
-        "total_cost_kes": 576.16,
+        "total_energy_kwh": 33.94,          # electricity + LPG + kerosene only
+        "solar_generated_kwh": 3.0,
+        "solar_savings_kes": round(3.0 * 28.0, 2),
+        "total_cost_kes": 582.32,
     }
     assert data["source_breakdown"]["solar"]["kwh"] == 3
     assert data["source_breakdown"]["lpg"]["quantity"] == 1
@@ -397,7 +421,8 @@ def test_selected_date_report_filters_sources_and_trends(client):
     )
     assert extended_report.status_code == 200
     extended_data = extended_report.get_json()["data"]
-    assert extended_data["summary"]["total_energy_kwh"] == 45.72
+    assert extended_data["summary"]["total_energy_kwh"] == 33.94   # solar not included
+    assert extended_data["summary"]["solar_generated_kwh"] == 12.0
     assert len(extended_data["daily_trends"]) == 2
 
     invalid_ranges = [
@@ -600,12 +625,15 @@ def test_tariff_start_date_preserves_old_log_costs(client):
     dashboard = client.get(
         "/api/v1/analytics/dashboard", headers=headers
     ).get_json()["data"]
-    assert dashboard["summary"]["total_cost_kes"] == 1189.5
-    assert dashboard["source_breakdown"]["grid_electricity"]["cost_kes"] == 58.5
-    assert dashboard["source_breakdown"]["lpg"]["cost_kes"] == 790.0
-    assert dashboard["source_breakdown"]["kerosene"]["cost_kes"] == 341.0
-    assert dashboard["source_breakdown"]["solar"]["savings_kes"] == 147.5
-    assert dashboard["advisory"][-1]["estimated_avoided_cost_kes"] == 147.5
+    # Dashboard now shows current month only. The start_date logs (today+2) fall
+    # into next month and are intentionally excluded from the running-month snapshot.
+    # Only the today-dated logs (old tariff rates) are included.
+    assert dashboard["summary"]["total_cost_kes"] == 704.0
+    assert dashboard["source_breakdown"]["grid_electricity"]["cost_kes"] == 28.0
+    assert dashboard["source_breakdown"]["lpg"]["cost_kes"] == 500.0
+    assert dashboard["source_breakdown"]["kerosene"]["cost_kes"] == 176.0
+    assert dashboard["source_breakdown"]["solar"]["savings_kes"] == 56.0
+    assert dashboard["advisory"][-1]["estimated_avoided_cost_kes"] == 56.0
 
 
 def test_invalid_measurements_and_negative_tariffs_are_rejected(client):
@@ -615,9 +643,8 @@ def test_invalid_measurements_and_negative_tariffs_are_rejected(client):
 
     responses = [
         client.post("/api/v1/appliances", json={
-            "name": "Invalid duty cycle",
-            "rated_wattage": 100,
-            "default_duty_cycle": 1.5
+            "name": "Missing wattage",
+            "rated_wattage": -1,
         }, headers=headers),
         client.post("/api/v1/appliances/batch-log", json={
             "log_date": "2026-10-09",
@@ -703,7 +730,6 @@ def test_family_member_can_view_but_cannot_log_usage(client):
             "name": "No permission",
             "category": "OTHER",
             "rated_wattage": 100,
-            "default_duty_cycle": 1
         },
         headers=headers,
     )

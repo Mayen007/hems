@@ -160,16 +160,16 @@ def seed_demo_data(username=None, password=None):
 
     # Seed Kenya Typical Appliances
     presets = [
-        ("Samsung Refrigerator 250L", "REFRIGERATION", 220.0, 0.50),
-        ("Living Room LED Bulbs (6x)", "LIGHTING", 60.0, 1.00),
-        ("Electric Kettle 1.7L", "COOKING", 1800.0, 1.00),
-        ("Instant Shower Head", "WATER_HEATING", 3500.0, 1.00),
-        ("Smart TV 43-Inch", "ENTERTAINMENT", 75.0, 1.00),
+        ("Samsung Refrigerator 250L", "REFRIGERATION", 220.0),
+        ("Living Room LED Bulbs (6x)", "LIGHTING", 60.0),
+        ("Electric Kettle 1.7L", "COOKING", 1800.0),
+        ("Instant Shower Head", "WATER_HEATING", 3500.0),
+        ("Smart TV 43-Inch", "ENTERTAINMENT", 75.0),
     ]
-    for name, cat, watt, duty in presets:
+    for name, cat, watt in presets:
         cur.execute(
-            "INSERT INTO appliances (household_id, name, category, rated_wattage, default_duty_cycle) VALUES (?, ?, ?, ?, ?)",
-            (hid, name, cat, watt, duty)
+            "INSERT INTO appliances (household_id, name, category, rated_wattage) VALUES (?, ?, ?, ?)",
+            (hid, name, cat, watt)
         )
 
     # Seed LPG Cylinder (13kg Total, 15.2kg Tare)

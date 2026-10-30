@@ -1,16 +1,14 @@
-"""Tests for Appliance Duty Cycle and Presets."""
+"""Tests for Appliance kWh Calculation and Presets."""
 import pytest
 from hems.services.appliance_service import calculate_appliance_kwh, get_presets
 
 def test_calculate_appliance_kwh_standard():
-    # 220W fridge running 24h at 0.5 duty cycle
-    # (220 * 24 * 0.5) / 1000 = 2.64 kWh
-    assert calculate_appliance_kwh(220.0, 24.0, 0.5) == 2.640
+    # 220W fridge running 24h: (220 * 24) / 1000 = 5.28 kWh
+    assert calculate_appliance_kwh(220.0, 24.0) == 5.280
 
 def test_calculate_appliance_kwh_instant_shower():
-    # 3500W instant shower running 0.5 hours (30 mins)
-    # (3500 * 0.5 * 1.0) / 1000 = 1.75 kWh
-    assert calculate_appliance_kwh(3500.0, 0.5, 1.0) == 1.750
+    # 3500W instant shower running 0.5 hours: (3500 * 0.5) / 1000 = 1.75 kWh
+    assert calculate_appliance_kwh(3500.0, 0.5) == 1.750
 
 def test_negative_values_raise_error():
     with pytest.raises(ValueError):

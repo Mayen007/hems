@@ -193,44 +193,47 @@ def get_cost_totals(
     }
 
 
-def get_source_totals(household_id: int) -> dict:
+def get_source_totals(household_id: int, start_date: str = None, end_date: str = None) -> dict:
     db = get_db()
+    date_filter = " AND {col} BETWEEN ? AND ?" if start_date and end_date else ""
+    date_params = (start_date, end_date) if start_date and end_date else ()
+
     # 1. Electricity from appliance logs
     elec_row = db.execute(
-        """SELECT COALESCE(SUM(al.computed_kwh), 0.0) as kwh
+        f"""SELECT COALESCE(SUM(al.computed_kwh), 0.0) as kwh
            FROM appliance_logs al
            JOIN appliances a ON al.appliance_id = a.id
-           WHERE a.household_id = ?""",
-        (household_id,)
+           WHERE a.household_id = ?{date_filter.format(col='al.log_date')}""",
+        (household_id, *date_params)
     ).fetchone()
     elec_kwh = round(elec_row["kwh"] if elec_row else 0.0, 2)
 
     # 2. LPG from readings
     lpg_row = db.execute(
-        """SELECT COALESCE(SUM(r.consumed_kg), 0.0) as kg, COALESCE(SUM(r.computed_kwh), 0.0) as kwh
+        f"""SELECT COALESCE(SUM(r.consumed_kg), 0.0) as kg, COALESCE(SUM(r.computed_kwh), 0.0) as kwh
            FROM lpg_readings r
            JOIN lpg_cylinders c ON r.cylinder_id = c.id
-           WHERE c.household_id = ?""",
-        (household_id,)
+           WHERE c.household_id = ?{date_filter.format(col='r.log_date')}""",
+        (household_id, *date_params)
     ).fetchone()
     lpg_kg = round(lpg_row["kg"] if lpg_row else 0.0, 2)
     lpg_kwh = round(lpg_row["kwh"] if lpg_row else 0.0, 2)
 
     # 3. Kerosene
     kero_row = db.execute(
-        "SELECT COALESCE(SUM(liters_used), 0.0) as liters, COALESCE(SUM(computed_kwh), 0.0) as kwh FROM kerosene_logs WHERE household_id = ?",
-        (household_id,)
+        f"SELECT COALESCE(SUM(liters_used), 0.0) as liters, COALESCE(SUM(computed_kwh), 0.0) as kwh FROM kerosene_logs WHERE household_id = ?{date_filter.format(col='log_date')}",
+        (household_id, *date_params)
     ).fetchone()
     kero_liters = round(kero_row["liters"] if kero_row else 0.0, 2)
     kero_kwh = round(kero_row["kwh"] if kero_row else 0.0, 2)
 
     # 4. Solar
     solar_row = db.execute(
-        """SELECT COALESCE(SUM(sl.yield_kwh), 0.0) as kwh
+        f"""SELECT COALESCE(SUM(sl.yield_kwh), 0.0) as kwh
            FROM solar_logs sl
            JOIN solar_systems s ON sl.solar_system_id = s.id
-           WHERE s.household_id = ?""",
-        (household_id,)
+           WHERE s.household_id = ?{date_filter.format(col='sl.log_date')}""",
+        (household_id, *date_params)
     ).fetchone()
     solar_kwh = round(solar_row["kwh"] if solar_row else 0.0, 2)
 
@@ -300,10 +303,15 @@ def get_weekly_trends(household_id: int) -> dict:
     }
 
 def get_dashboard_data(household_id: int) -> dict:
+    import calendar
     db = get_db()
+    today = date.today()
+    month_start = today.replace(day=1).isoformat()
+    month_end = today.replace(day=calendar.monthrange(today.year, today.month)[1]).isoformat()
+
     rates = get_tariff_rates(household_id)
-    totals = get_source_totals(household_id)
-    costs = get_cost_totals(household_id)
+    totals = get_source_totals(household_id, month_start, month_end)
+    costs = get_cost_totals(household_id, month_start, month_end)
     cyl = get_latest_cylinder(household_id)
 
     # Household info
@@ -311,7 +319,7 @@ def get_dashboard_data(household_id: int) -> dict:
     household_name = hh["name"] if hh else "My Household"
     location_county = hh["location_county"] if hh and hh["location_county"] else None
 
-    total_kwh = round(totals["elec_kwh"] + totals["lpg_kwh"] + totals["kero_kwh"] + totals["solar_kwh"], 2)
+    total_kwh = round(totals["elec_kwh"] + totals["lpg_kwh"] + totals["kero_kwh"], 2)
     total_cost = costs["total_cost_kes"]
 
     # Calculate percentage costs
@@ -332,7 +340,6 @@ def get_dashboard_data(household_id: int) -> dict:
         },
     })
 
-    today = date.today()
     period = today.strftime("%Y-%m")
     period_label = today.strftime("%B %Y")
     weekly_trends = get_weekly_trends(household_id)
@@ -345,6 +352,8 @@ def get_dashboard_data(household_id: int) -> dict:
             "period": period,
             "period_label": period_label,
             "total_energy_kwh": total_kwh,
+            "solar_generated_kwh": totals["solar_kwh"],
+            "solar_savings_kes": solar_savings_kes,
             "total_cost_kes": total_cost,
             "savings_vs_previous_month_pct": None
         },
@@ -485,9 +494,9 @@ def get_report_data(household_id: int, start_date: str, end_date: str) -> dict:
         "summary": {
             "start_date": start_date,
             "end_date": end_date,
-            "total_energy_kwh": round(
-                electricity_kwh + lpg_kwh + kerosene_kwh + solar_kwh, 2
-            ),
+            "total_energy_kwh": round(electricity_kwh + lpg_kwh + kerosene_kwh, 2),
+            "solar_generated_kwh": solar_kwh,
+            "solar_savings_kes": costs["solar_savings_kes"],
             "total_cost_kes": total_cost,
         },
         "source_breakdown": source_breakdown,

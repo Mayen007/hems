@@ -15,13 +15,10 @@ def _validated_appliance_fields(data):
     category = data.get("category", "OTHER")
     category = category.strip() if isinstance(category, str) else ""
     wattage = finite_number(data.get("rated_wattage"), 0.0)
-    duty = finite_number(data.get("default_duty_cycle"), 1.0)
 
     if not name or not category or wattage is None or wattage <= 0:
         return None
-    if duty is None or not 0 <= duty <= 1:
-        return None
-    return name, category, wattage, duty
+    return name, category, wattage
 
 
 @appliance_bp.route("", methods=["GET"])
@@ -30,7 +27,7 @@ def list_appliances():
     hid = g.current_user["household_id"]
     db = get_db()
     rows = db.execute(
-        """SELECT id, name, category, rated_wattage, default_duty_cycle, is_active
+        """SELECT id, name, category, rated_wattage, is_active
            FROM appliances WHERE household_id = ? ORDER BY id ASC""",
         (hid,)
     ).fetchall()
@@ -54,8 +51,8 @@ def create_appliance():
     db = get_db()
     cur = db.cursor()
     cur.execute(
-        """INSERT INTO appliances (household_id, name, category, rated_wattage, default_duty_cycle)
-           VALUES (?, ?, ?, ?, ?)""",
+        """INSERT INTO appliances (household_id, name, category, rated_wattage)
+           VALUES (?, ?, ?, ?)""",
         (hid, *fields)
     )
     db.commit()
@@ -83,7 +80,7 @@ def update_appliance(aid: int):
 
     db.execute(
         """UPDATE appliances
-           SET name = ?, category = ?, rated_wattage = ?, default_duty_cycle = ?
+           SET name = ?, category = ?, rated_wattage = ?
            WHERE id = ? AND household_id = ?""",
         (*fields, aid, hid),
     )
@@ -103,6 +100,7 @@ def batch_log():
         return jsonify({"status": "error", "message": "Valid log_date and non-empty entries array required"}), 400
 
     validated_entries = []
+    seen_appliance_ids = set()
     for item in entries:
         if not isinstance(item, dict):
             return jsonify({"status": "error", "message": "Each entry must be an object"}), 400
@@ -110,6 +108,9 @@ def batch_log():
         runtime = finite_number(item.get("runtime_hours"))
         if not isinstance(aid, int) or runtime is None or not 0 <= runtime <= 24:
             return jsonify({"status": "error", "message": "Valid appliance_id and runtime_hours from 0 to 24 required"}), 400
+        if aid in seen_appliance_ids:
+            return jsonify({"status": "error", "message": f"Duplicate appliance_id {aid} in batch"}), 400
+        seen_appliance_ids.add(aid)
         validated_entries.append((aid, runtime))
 
     hid = g.current_user["household_id"]
@@ -119,7 +120,7 @@ def batch_log():
     appliances = []
     for aid, runtime in validated_entries:
         app = db.execute(
-            "SELECT rated_wattage, default_duty_cycle FROM appliances WHERE id = ? AND household_id = ?",
+            "SELECT rated_wattage FROM appliances WHERE id = ? AND household_id = ?",
             (aid, hid)
         ).fetchone()
         if not app:
@@ -127,7 +128,7 @@ def batch_log():
         appliances.append((aid, runtime, app))
 
     for aid, runtime, app in appliances:
-        kwh = calculate_appliance_kwh(app["rated_wattage"], runtime, app["default_duty_cycle"])
+        kwh = calculate_appliance_kwh(app["rated_wattage"], runtime)
         total_kwh += kwh
         if isinstance(db, MySQLConnection):
             upsert_query = """INSERT INTO appliance_logs (appliance_id, log_date, runtime_hours, computed_kwh)
