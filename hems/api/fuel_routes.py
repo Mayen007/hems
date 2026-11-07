@@ -12,6 +12,7 @@ fuel_bp = Blueprint("fuel", __name__)
 @fuel_bp.route("/lpg/cylinders", methods=["GET"])
 @login_required
 def list_cylinders():
+    """List LPG cylinders belonging to the authenticated household."""
     hid = g.current_user["household_id"]
     db = get_db()
     rows = db.execute(
@@ -23,6 +24,7 @@ def list_cylinders():
 @fuel_bp.route("/lpg/cylinders", methods=["POST"])
 @require_role("ADMIN")
 def create_cylinder():
+    """Add an LPG cylinder to the authenticated household."""
     data = request.get_json(silent=True)
     if not isinstance(data, dict):
         return jsonify({"status": "error", "message": "JSON object required"}), 400
@@ -46,6 +48,7 @@ def create_cylinder():
 @fuel_bp.route("/lpg", methods=["POST"])
 @require_role("ADMIN")
 def log_lpg():
+    """Record an LPG weight reading and calculate consumption."""
     data = request.get_json(silent=True)
     if not isinstance(data, dict):
         return jsonify({"status": "error", "message": "JSON object required"}), 400
@@ -128,6 +131,7 @@ def log_lpg():
 @fuel_bp.route("/kerosene", methods=["POST"])
 @require_role("ADMIN")
 def log_kerosene():
+    """Record kerosene use and calculate its energy and cost."""
     data = request.get_json(silent=True)
     if not isinstance(data, dict):
         return jsonify({"status": "error", "message": "JSON object required"}), 400
@@ -160,6 +164,7 @@ def log_kerosene():
 @fuel_bp.route("/solar", methods=["POST"])
 @require_role("ADMIN")
 def log_solar():
+    """Record solar energy yield for the authenticated household."""
     data = request.get_json(silent=True)
     if not isinstance(data, dict):
         return jsonify({"status": "error", "message": "JSON object required"}), 400
@@ -191,6 +196,7 @@ def log_solar():
 @fuel_bp.route("/recent", methods=["GET"])
 @login_required
 def recent_logs():
+    """Return the authenticated household's recent energy logs."""
     hid = g.current_user["household_id"]
     db = get_db()
     

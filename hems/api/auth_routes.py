@@ -10,6 +10,7 @@ auth_bp = Blueprint("auth", __name__)
 
 @auth_bp.route("/register", methods=["POST"])
 def register():
+    """Register a household and its administrator account."""
     data = request.get_json() or {}
     hname = data.get("household_name", "My Household").strip()
     username = data.get("username", "").strip()
@@ -56,6 +57,7 @@ def register():
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
+    """Authenticate a user and issue a session token."""
     data = request.get_json() or {}
     username = data.get("username", "").strip()
     password = data.get("password", "")
@@ -94,6 +96,7 @@ def login():
 @auth_bp.route("/me", methods=["GET"])
 @login_required
 def me():
+    """Return the authenticated user's account and household details."""
     db = get_db()
     user = db.execute(
         """SELECT u.id, u.household_id, u.username, u.email, u.role,
@@ -118,6 +121,7 @@ def me():
 
 @auth_bp.route("/logout", methods=["POST"])
 def logout():
+    """Clear the current user's session cookie."""
     resp = make_response(jsonify({"status": "success", "message": "Logged out"}))
     resp.delete_cookie("hems_token")
     return resp, 200

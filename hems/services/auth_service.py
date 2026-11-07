@@ -1,5 +1,6 @@
 """Authentication and Role-Based Access Control (RBAC) Service."""
 from functools import wraps
+from typing import Any
 from flask import current_app, request, jsonify, g
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
@@ -16,7 +17,7 @@ def generate_token(user_id: int, household_id: int, role: str) -> str:
     payload = {"user_id": user_id, "household_id": household_id, "role": role}
     return s.dumps(payload)
 
-def verify_token(token: str) -> dict:
+def verify_token(token: str) -> dict[str, Any] | None:
     s = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
     max_age = current_app.config["TOKEN_EXPIRY_SECONDS"]
     try:

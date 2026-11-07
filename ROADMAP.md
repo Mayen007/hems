@@ -152,13 +152,10 @@ The items below are corrections required to align the written report with the im
 
 ---
 
-### Fix 1 — Database library: replace `flask_mysqldb` with PyMySQL
+### Fix 1 — Database library: match the proposal's Flask-MySQLdb stack
 
-- **Priority:** Critical — a named tool that does not exist in the project.
-- **Sections to edit:** §3.6 (Table 3.2 justification row), §5.6 (Deployment Architecture text and Table 5.3), Appendix B notes.
-- **Currently says:** "Direct SQL via `flask_mysqldb`"
-- **Should say:** "Direct SQL via **PyMySQL** (`pymysql`), wrapped in a thin `MySQLConnection` / `MySQLCursor` adapter defined in `hems/db.py`. This adapter translates SQLite-style `?` placeholders to MySQL `%s` at runtime, which allows the same query strings to target either backend."
-- **Also update:** Table 3.4 (Development Environment) — the library row should list PyMySQL 1.1.1, not flask_mysqldb.
+- **Status:** Implemented.
+- The application uses the proposal's `flask_mysqldb` extension via the `Flask-MySQLdb` package, with `mysqlclient` as its driver. A thin adapter in `hems/db.py` translates SQLite-style `?` placeholders for MySQL queries. SQLite remains available for automated tests.
 
 ---
 
@@ -212,7 +209,7 @@ The items below are corrections required to align the written report with the im
 - **Priority:** Medium — affects reproducibility and test setup documentation.
 - **Sections to edit:** §3.7 (Testing Strategy), §5.7 (Sample Test Cases), §5.8 (Testing Results).
 - **Currently says:** MySQL is the only database; tests run against MySQL.
-- **Should say:** The system supports a SQLite backend (activated by `USE_SQLITE=true` in `.env`) used for all automated tests and local development without a MySQL server. The `hems/db.py` adapter switches between PyMySQL and `sqlite3` at connection time. All 56 automated tests run against an in-memory or file-based SQLite database via `pytest`; the MySQL workflow was verified separately in the QA phase (see §5.8). Mention `tests/schema_sqlite.sql` as the test schema file.
+- **Should say:** The system supports a SQLite backend (activated by `USE_SQLITE=true` in `.env`) used for automated tests and local development without a MySQL server. The `hems/db.py` adapter switches between Flask-MySQLdb and `sqlite3` at connection time. Tests use an isolated SQLite database via `pytest`; the MySQL workflow was verified separately in the QA phase (see §5.8). Mention `tests/schema_sqlite.sql` as the test schema file.
 
 ---
 
@@ -253,7 +250,7 @@ The items below are corrections required to align the written report with the im
 
 | # | Fix | Report section(s) | Done |
 |---|-----|--------------------|------|
-| 1 | Replace `flask_mysqldb` → PyMySQL | §3.6, §5.6, Appendix B, Table 3.4 | ☐ |
+| 1 | Use Flask-MySQLdb as specified in the proposal | §3.6, §5.6, Appendix B | ☑ |
 | 2 | Add `households` table to ERD | §4.3, §4.5, §4.8 | ☐ |
 | 3 | Replace `ELEC_READINGS` → `appliances` + `appliance_logs` | §4.3, §4.5, §4.8, §5.3, §5.4, App. A | ☐ |
 | 4 | Replace `GAS_READINGS` → `lpg_cylinders` + `lpg_readings` | §4.3, §4.4.1, §4.5, §4.8, App. A | ☐ |

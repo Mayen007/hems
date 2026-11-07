@@ -20,6 +20,7 @@ def test_token_generation_and_verification():
         token = generate_token(user_id=1, household_id=10, role="ADMIN")
         assert token is not None
         payload = verify_token(token)
+        assert payload is not None
         assert payload["user_id"] == 1
         assert payload["household_id"] == 10
         assert payload["role"] == "ADMIN"

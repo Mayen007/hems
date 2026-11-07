@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import Mock
 
 from hems import create_app
-from hems.db import MySQLCursor, get_db, init_db, seed_demo_data
+from hems.db import MySQLConnection, MySQLCursor, get_db, init_db, seed_demo_data
 
 
 def test_mysql_cursor_translates_sqlite_placeholders():
@@ -19,6 +19,22 @@ def test_mysql_cursor_translates_sqlite_placeholders():
         ("abdijabar",),
     )
     assert result is mysql_cursor
+
+
+def test_mysql_connection_uses_flask_extension_connection(monkeypatch):
+    connection = Mock()
+    app = create_app({
+        "TESTING": True,
+        "SECRET_KEY": "test-key",
+        "MYSQL_USER": "hems",
+    })
+    monkeypatch.setattr("hems.db.mysql", Mock(connection=connection))
+
+    with app.app_context():
+        db = get_db()
+
+    assert isinstance(db, MySQLConnection)
+    assert db._connection is connection
 
 
 def test_mysql_connection_errors_are_not_hidden_by_sqlite_fallback(monkeypatch):
@@ -47,9 +63,12 @@ def test_demo_seed_generates_credentials_that_can_log_in(tmp_path):
     with app.app_context():
         init_db()
         credentials = seed_demo_data()
+        assert credentials is not None
         assert credentials["username"].startswith("demo_")
         assert seed_demo_data() is None
 
     response = app.test_client().post("/api/v1/auth/login", json=credentials)
     assert response.status_code == 200
-    assert response.get_json()["user"]["username"] == credentials["username"]
+    response_data = response.get_json()
+    assert response_data is not None
+    assert response_data["user"]["username"] == credentials["username"]

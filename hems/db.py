@@ -4,13 +4,12 @@ import secrets
 import sqlite3
 import click
 from datetime import date
-from typing import Any, Callable, cast
 from flask import current_app, g
-import pymysql
-from pymysql.constants import FIELD_TYPE
-from pymysql.converters import conversions
-from pymysql.cursors import DictCursor
+from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash
+
+
+mysql = MySQL()
 
 
 class MySQLCursor:
@@ -39,31 +38,12 @@ class MySQLConnection:
     def commit(self):
         self._connection.commit()
 
-    def close(self):
-        self._connection.close()
-
 
 def _connect_mysql():
     config = current_app.config
     if not config["MYSQL_USER"]:
         raise RuntimeError("Set MYSQL_USER before connecting to MySQL.")
-    mysql_conversions = cast(
-        dict[int | type[Any], Callable[[Any], str] | Callable[[str], Any]],
-        conversions.copy(),
-    )
-    mysql_conversions[FIELD_TYPE.DECIMAL] = float
-    mysql_conversions[FIELD_TYPE.NEWDECIMAL] = float
-    return MySQLConnection(pymysql.connect(
-        host=config["MYSQL_HOST"],
-        port=config["MYSQL_PORT"],
-        user=config["MYSQL_USER"],
-        password=config["MYSQL_PASSWORD"],
-        database=config["MYSQL_DATABASE"],
-        charset="utf8mb4",
-        cursorclass=DictCursor,
-        conv=mysql_conversions,
-        autocommit=False,
-    ))
+    return MySQLConnection(mysql.connection)
 
 
 def _connect_sqlite(db_path=None):
@@ -101,7 +81,7 @@ def get_db():
 
 def close_db(error=None):
     db = g.pop("db", None)
-    if db is not None:
+    if isinstance(db, sqlite3.Connection):
         db.close()
 
 
@@ -127,17 +107,21 @@ def init_db():
     db.commit()
 
 
-def seed_demo_data(username=None, password=None):
+def seed_demo_data(
+    username: str | None = None,
+    password: str | None = None,
+):
     db = get_db()
     existing = db.execute("SELECT id FROM households WHERE id = 1").fetchone()
     if existing:
         return None
 
-    if (username is None) != (password is None):
-        raise ValueError("Provide both demo username and password, or neither.")
-    if username is None:
+    if username is None and password is None:
         username = f"demo_{secrets.token_hex(4)}"
         password = secrets.token_urlsafe(24)
+    elif username is None or password is None:
+        raise ValueError(
+            "Provide both demo username and password, or neither.")
 
     # Seed Default Household
     cur = db.cursor()
@@ -205,7 +189,8 @@ def init_db_command():
 def seed_demo_data_command():
     credentials = seed_demo_data()
     if credentials is None:
-        click.echo("Demo data already exists; no new login credentials were generated.")
+        click.echo(
+            "Demo data already exists; no new login credentials were generated.")
         return
     click.echo("Seeded HEMS demo data.")
     click.echo(f"Demo username: {credentials['username']}")

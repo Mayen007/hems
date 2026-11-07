@@ -24,6 +24,7 @@ def _validated_appliance_fields(data):
 @appliance_bp.route("", methods=["GET"])
 @login_required
 def list_appliances():
+    """List appliances belonging to the authenticated household."""
     hid = g.current_user["household_id"]
     db = get_db()
     rows = db.execute(
@@ -35,11 +36,13 @@ def list_appliances():
 
 @appliance_bp.route("/presets", methods=["GET"])
 def presets():
+    """Return the built-in appliance presets."""
     return jsonify({"status": "success", "data": get_presets()}), 200
 
 @appliance_bp.route("", methods=["POST"])
 @require_role("ADMIN")
 def create_appliance():
+    """Add an appliance to the authenticated household."""
     data = request.get_json(silent=True)
     if not isinstance(data, dict):
         return jsonify({"status": "error", "message": "JSON object required"}), 400
@@ -62,6 +65,7 @@ def create_appliance():
 @appliance_bp.route("/<int:aid>", methods=["PUT"])
 @require_role("ADMIN")
 def update_appliance(aid: int):
+    """Update an appliance owned by the authenticated household."""
     data = request.get_json(silent=True)
     if not isinstance(data, dict):
         return jsonify({"status": "error", "message": "JSON object required"}), 400
@@ -90,6 +94,7 @@ def update_appliance(aid: int):
 @appliance_bp.route("/batch-log", methods=["POST"])
 @require_role("ADMIN")
 def batch_log():
+    """Record daily runtime for multiple household appliances."""
     data = request.get_json(silent=True)
     if not isinstance(data, dict):
         return jsonify({"status": "error", "message": "JSON object required"}), 400
@@ -159,6 +164,7 @@ def batch_log():
 @appliance_bp.route("/<int:aid>", methods=["DELETE"])
 @require_role("ADMIN")
 def delete_appliance(aid: int):
+    """Delete an appliance owned by the authenticated household."""
     hid = g.current_user["household_id"]
     db = get_db()
     appliance = db.execute(

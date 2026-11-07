@@ -1,7 +1,7 @@
 """HEMS Application Factory."""
 from flask import Flask, jsonify
 from hems.config import Config
-from hems.db import init_db_command
+from hems.db import init_db_command, mysql
 
 
 from flask.json.provider import DefaultJSONProvider
@@ -22,6 +22,7 @@ def create_app(test_config=None):
         app.config.from_object(Config)
     else:
         app.config.from_mapping(test_config)
+    mysql.init_app(app)
     if not app.config["TESTING"] and not app.config.get("SECRET_KEY"):
         raise RuntimeError("Set SECRET_KEY in the environment before starting HEMS.")
 

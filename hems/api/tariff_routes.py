@@ -11,6 +11,7 @@ tariff_bp = Blueprint("tariffs", __name__)
 @tariff_bp.route("", methods=["GET"])
 @login_required
 def get_tariffs():
+    """Return the latest tariff rates for the authenticated household."""
     hid = g.current_user["household_id"]
     db = get_db()
     row = db.execute(
@@ -32,6 +33,7 @@ def get_tariffs():
 @tariff_bp.route("", methods=["POST"])
 @require_role("ADMIN")
 def update_tariffs():
+    """Set new tariff rates for the authenticated household."""
     data = request.get_json(silent=True)
     if not isinstance(data, dict):
         return jsonify({"status": "error", "message": "JSON object required"}), 400
