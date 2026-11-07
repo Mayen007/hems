@@ -12,6 +12,7 @@ def calculate_costs(electricity_kwh: float = 0.0,
                     lpg_kg: float = 0.0,
                     kerosene_liters: float = 0.0,
                     tariffs: dict = None) -> dict:
+    """Price electricity, LPG, and kerosene quantities using KES tariffs."""
     rates = tariffs or DEFAULT_TARIFFS
     elec_cost = round(electricity_kwh * rates.get("electricity_per_kwh", DEFAULT_TARIFFS["electricity_per_kwh"]), 2)
     lpg_cost = round(lpg_kg * rates.get("lpg_per_kg", DEFAULT_TARIFFS["lpg_per_kg"]), 2)
@@ -26,6 +27,7 @@ def calculate_costs(electricity_kwh: float = 0.0,
     }
 
 def get_fuel_parity(tariffs: dict = None) -> dict:
+    """Compare retail fuel prices per equivalent input-energy kWh."""
     rates = {**DEFAULT_TARIFFS, **(tariffs or {})}
     effective_date = rates.get("effective_date") or date.today().isoformat()
     if hasattr(effective_date, "isoformat"):

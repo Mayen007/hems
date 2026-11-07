@@ -1,3 +1,4 @@
+"""Load environment-backed settings for local and deployed HEMS instances."""
 import os
 from dotenv import load_dotenv
 from MySQLdb.constants import FIELD_TYPE
@@ -13,6 +14,7 @@ _MYSQL_CONVERSIONS[FIELD_TYPE.NEWDECIMAL] = float
 
 
 def get_bool_env(name, default=False):
+    """Parse common truthy environment-variable values."""
     value = os.environ.get(name)
     if value is None:
         return default
@@ -20,6 +22,8 @@ def get_bool_env(name, default=False):
 
 
 class Config:
+    """Flask and database settings sourced from the process environment."""
+
     SECRET_KEY = os.environ.get("SECRET_KEY")
     USE_SQLITE = get_bool_env("USE_SQLITE")
     SQLITE_DATABASE_PATH = os.environ.get("SQLITE_DATABASE_PATH")

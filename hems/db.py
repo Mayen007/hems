@@ -13,33 +13,45 @@ mysql = MySQL()
 
 
 class MySQLCursor:
+    """Adapt MySQL cursors to the placeholder syntax used by application SQL."""
+
     def __init__(self, cursor):
+        """Wrap an underlying database cursor."""
         self._cursor = cursor
 
     def execute(self, query, parameters=()):
+        """Translate SQLite-style placeholders before running a query."""
         self._cursor.execute(query.replace("?", "%s"), parameters)
         return self
 
     def __getattr__(self, name):
+        """Expose cursor attributes not overridden by this adapter."""
         return getattr(self._cursor, name)
 
 
 class MySQLConnection:
+    """Provide the small connection interface shared by the database backends."""
+
     def __init__(self, connection):
+        """Wrap a Flask-MySQLdb connection."""
         self._connection = connection
 
     def cursor(self):
+        """Return a cursor that accepts the application's SQL placeholders."""
         return MySQLCursor(self._connection.cursor())
 
     def execute(self, query, parameters=()):
+        """Execute a query and return its adapted cursor."""
         cursor = self.cursor()
         return cursor.execute(query, parameters)
 
     def commit(self):
+        """Commit the active transaction."""
         self._connection.commit()
 
 
 def _connect_mysql():
+    """Open the configured Flask-MySQLdb connection or report missing setup."""
     config = current_app.config
     if not config["MYSQL_USER"]:
         raise RuntimeError("Set MYSQL_USER before connecting to MySQL.")
@@ -47,6 +59,7 @@ def _connect_mysql():
 
 
 def _connect_sqlite(db_path=None):
+    """Open a SQLite database and initialize its test schema when new."""
     if db_path is None:
         db_path = current_app.config.get("SQLITE_DATABASE_PATH") or os.path.join(
             os.path.dirname(os.path.dirname(__file__)), "hems_dev.db"
@@ -68,6 +81,7 @@ def _connect_sqlite(db_path=None):
 
 
 def get_db():
+    """Return the request-context database connection, opening it once."""
     if "db" not in g:
         test_db_path = current_app.config.get("TEST_DATABASE_PATH")
         if current_app.config.get("TESTING") and test_db_path:
@@ -80,12 +94,14 @@ def get_db():
 
 
 def close_db(error=None):
+    """Close a SQLite connection when its app context is torn down."""
     db = g.pop("db", None)
     if isinstance(db, sqlite3.Connection):
         db.close()
 
 
 def init_db():
+    """Apply the schema matching the currently selected database backend."""
     db = get_db()
     if isinstance(db, sqlite3.Connection):
         schema_path = os.path.join(
@@ -111,6 +127,7 @@ def seed_demo_data(
     username: str | None = None,
     password: str | None = None,
 ):
+    """Seed sample household data and return credentials, or None if already seeded."""
     db = get_db()
     existing = db.execute("SELECT id FROM households WHERE id = 1").fetchone()
     if existing:
@@ -181,12 +198,14 @@ def seed_demo_data(
 
 @click.command("init-db")
 def init_db_command():
+    """Expose database schema initialization as a Flask CLI command."""
     init_db()
     click.echo("Initialized the HEMS database.")
 
 
 @click.command("seed-demo-data")
 def seed_demo_data_command():
+    """Seed sample data and print credentials only when a new account is made."""
     credentials = seed_demo_data()
     if credentials is None:
         click.echo(

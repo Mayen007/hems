@@ -1,3 +1,4 @@
+// Cache the application shell for offline visits; replace old caches on activation.
 const CACHE_NAME = 'hems-cache-v7';
 const ASSETS_TO_CACHE = [
   '/',

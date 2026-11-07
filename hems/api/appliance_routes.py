@@ -10,6 +10,7 @@ appliance_bp = Blueprint("appliances", __name__)
 
 
 def _validated_appliance_fields(data):
+    """Normalize and validate the name, category, and wattage in a request."""
     name = data.get("name", "")
     name = name.strip() if isinstance(name, str) else ""
     category = data.get("category", "OTHER")

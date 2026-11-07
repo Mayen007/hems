@@ -8,7 +8,10 @@ from flask.json.provider import DefaultJSONProvider
 from datetime import date, datetime
 
 class CustomJSONProvider(DefaultJSONProvider):
+    """Serialize date values in the formats used by the API responses."""
+
     def default(self, o):
+        """Convert dates to JSON strings and defer other types to Flask."""
         if isinstance(o, datetime):
             return o.strftime("%Y-%m-%d %H:%M:%S")
         if isinstance(o, date):
@@ -16,6 +19,7 @@ class CustomJSONProvider(DefaultJSONProvider):
         return super().default(o)
 
 def create_app(test_config=None):
+    """Build the Flask app, configure extensions, and register route groups."""
     app = Flask(__name__, template_folder="templates", static_folder="static")
     app.json = CustomJSONProvider(app)
     if test_config is None:
@@ -47,10 +51,12 @@ def create_app(test_config=None):
 
     @app.errorhandler(404)
     def not_found(error):
+        """Return the API's standard JSON response for missing resources."""
         return jsonify({"status": "error", "message": "Resource not found"}), 404
 
     @app.errorhandler(500)
     def internal_error(error):
+        """Return the API's standard JSON response for server errors."""
         return jsonify({"status": "error", "message": "Internal server error"}), 500
 
     return app

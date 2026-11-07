@@ -1,3 +1,4 @@
+/* Shared color tokens keep the dashboard palette consistent. */
 :root {
   --bs-success: #1e7658;
   --hems-forest: #12382f;
@@ -39,6 +40,7 @@ main.container,
   min-width: 0;
 }
 
+/* Primary dashboard identity and call-to-action styling. */
 .dashboard-hero {
   position: relative;
   isolation: isolate;
@@ -121,6 +123,7 @@ main.container,
   box-shadow: none;
 }
 
+/* Summary cards emphasize energy, cost, LPG, and solar KPIs. */
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -216,6 +219,7 @@ main.container,
   font-weight: 600;
 }
 
+/* Analytics layout, chart states, and fuel price comparison bars. */
 .analytics-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.45fr) minmax(19rem, 1fr);
@@ -303,6 +307,7 @@ main.container,
   white-space: nowrap;
 }
 
+/* Tables, alerts, dialogs, and form controls use the shared surface style. */
 .logs-card {
   border-radius: 1.35rem;
 }
@@ -371,12 +376,14 @@ main.container,
   box-shadow: 0 0 0 0.22rem rgb(30 118 88 / 14%);
 }
 
+/* Collapse the two-column analytics layout on tablet-sized screens. */
 @media (max-width: 991.98px) {
   .analytics-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 }
 
+/* Keep navigation, cards, charts, and dialogs usable on narrow screens. */
 @media (max-width: 575.98px) {
   .navbar {
     padding: 0.6rem 0.75rem !important;

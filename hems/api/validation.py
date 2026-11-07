@@ -5,6 +5,7 @@ from typing import Any
 
 
 def finite_number(value: Any, default: float | int | None = None) -> float | None:
+    """Return a finite numeric value, using the default for a missing value."""
     if isinstance(value, bool):
         return None
     numeric_value = default if value is None else value
@@ -18,6 +19,7 @@ def finite_number(value: Any, default: float | int | None = None) -> float | Non
 
 
 def is_iso_date(value):
+    """Check that a value is a canonical, valid YYYY-MM-DD date string."""
     if not isinstance(value, str):
         return False
     try:

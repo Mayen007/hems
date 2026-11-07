@@ -11,10 +11,12 @@ KENYAN_APPLIANCE_PRESETS = [
 ]
 
 def calculate_appliance_kwh(rated_wattage: float, runtime_hours: float) -> float:
+    """Convert rated wattage and runtime into kWh, capped at one day."""
     if rated_wattage < 0 or runtime_hours < 0:
         raise ValueError("Parameters cannot be negative")
     clamped_runtime = min(24.0, runtime_hours)
     return round((rated_wattage * clamped_runtime) / 1000.0, 3)
 
 def get_presets() -> list:
+    """Return a shallow copy of the built-in appliance preset list."""
     return list(KENYAN_APPLIANCE_PRESETS)

@@ -4,6 +4,7 @@ Analyzes consumption patterns across fuel vectors to generate high-impact,
 actionable cost-saving recommendations tailored to Kenyan households.
 """
 def _highest_cost_advisory(source_costs: dict) -> dict | None:
+    """Describe the largest positive energy cost when a known source leads."""
     source_labels = {
         "grid_electricity": "grid electricity",
         "lpg": "LPG",
@@ -34,6 +35,7 @@ def _highest_cost_advisory(source_costs: dict) -> dict | None:
 
 
 def generate_advisories(metrics: dict) -> list:
+    """Build household advice from current LPG, solar, and spending metrics."""
     advisories = []
     cost_advisory = _highest_cost_advisory(metrics.get("source_costs", {}))
     if cost_advisory:

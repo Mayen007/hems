@@ -1,4 +1,5 @@
 // HEMS Application Frontend Logic
+// Authentication and request state are shared by the dashboard and form handlers.
 let weeklyChart = null;
 let donutChart = null;
 let reportChart = null;
@@ -17,6 +18,7 @@ if ('serviceWorker' in navigator) {
 window.addEventListener('online', () => syncOfflineQueue());
 
 // API Fetch with Auth (credentials: include sends session cookie)
+/** Send an API request with the session cookie and shared JSON headers. */
 async function apiFetch(url, options = {}) {
   const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
   const res = await fetch(url, { ...options, credentials: 'include', headers });
@@ -27,6 +29,7 @@ async function apiFetch(url, options = {}) {
 }
 
 // Check existing authenticated session on page load
+/** Restore the signed-in user from the server-managed session cookie. */
 async function checkAuthSession() {
   try {
     const res = await fetch('/api/v1/auth/me', {
@@ -48,6 +51,7 @@ async function checkAuthSession() {
 }
 
 // Auth UI State
+/** Keep account controls and private dashboard content in sync with auth state. */
 function updateAuthUI(user) {
   authenticatedUser = user;
   authRevision += 1;
@@ -90,6 +94,7 @@ function updateAuthUI(user) {
   }
 }
 
+/** Show the authentication dialog on the requested sign-in or registration tab. */
 function openAuthModal(tab = 'login') {
   const modalEl = document.getElementById('modal-auth');
   if (!modalEl) return;
@@ -104,6 +109,7 @@ function openAuthModal(tab = 'login') {
   if (alert) { alert.textContent = ''; alert.classList.add('d-none'); }
 }
 
+/** Remove household-specific values when no user is authenticated. */
 function resetDashboardUI() {
   const heroName = document.getElementById('hero-household-name');
   if (heroName) heroName.textContent = 'My Household';
@@ -144,6 +150,7 @@ function resetDashboardUI() {
   clearReportData();
 }
 
+/** Revoke the current session on the server and reset the page. */
 async function handleLogout() {
   try {
     await fetch('/api/v1/auth/logout', { method: 'POST', credentials: 'include' });
@@ -152,6 +159,7 @@ async function handleLogout() {
   showToast('Signed out successfully.', 'info');
 }
 
+/** Destroy dashboard charts and clear their accessible data tables. */
 function clearCharts() {
   weeklyChart?.destroy();
   donutChart?.destroy();
@@ -171,6 +179,7 @@ function clearCharts() {
   });
 }
 
+/** Replace the recent-log table with its signed-out empty state. */
 function clearRecentLogs() {
   const tbody = document.getElementById('recent-logs-body');
   if (!tbody) return;
@@ -183,12 +192,14 @@ function clearRecentLogs() {
   tbody.replaceChildren(row);
 }
 
+/** Replace fuel comparison content with its signed-out prompt. */
 function clearFuelParity() {
   const container = document.getElementById('parity-container');
   if (container) container.textContent = 'Sign in to view household cost comparison.';
 }
 
 // Offline Queue Persistence
+/** Persist a fuel or appliance log locally until the network is available. */
 function queueOfflineLog(endpoint, payload) {
   const queue = JSON.parse(localStorage.getItem('hems_offline_queue') || '[]');
   queue.push({ endpoint, payload, timestamp: Date.now() });
@@ -196,6 +207,7 @@ function queueOfflineLog(endpoint, payload) {
   showToast('Saved offline. Will sync when reconnected.', 'info');
 }
 
+/** Retry queued logs and retain entries the server has not accepted. */
 async function syncOfflineQueue() {
   const queue = JSON.parse(localStorage.getItem('hems_offline_queue') || '[]');
   if (!queue.length) return;
@@ -220,6 +232,7 @@ async function syncOfflineQueue() {
 }
 
 // Toast Notifications
+/** Display a transient, accessible status message. */
 function showToast(message, type = 'success') {
   const container = document.getElementById('toast-container');
   if (!container) return;
@@ -245,6 +258,7 @@ function showToast(message, type = 'success') {
 }
 
 // Dashboard Data Loader
+/** Load the dashboard and ignore responses from an earlier auth state. */
 async function loadDashboard() {
   if (!authenticatedUser) return;
   const requestRevision = authRevision;
@@ -351,6 +365,7 @@ async function loadDashboard() {
 }
 
 // Fuel Parity Loader
+/** Render current input-energy price comparisons for each fuel source. */
 async function loadFuelParity() {
   if (!authenticatedUser) return;
   const requestRevision = authRevision;
@@ -413,6 +428,7 @@ async function loadFuelParity() {
   }
 }
 
+/** Format a tariff effective date without shifting it across time zones. */
 function formatRateDate(value) {
   const datePart = String(value || '').slice(0, 10);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(datePart)) return 'date unavailable';
@@ -424,6 +440,7 @@ function formatRateDate(value) {
   });
 }
 
+/** Format a local calendar date as the API's YYYY-MM-DD value. */
 function formatLocalDate(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -431,6 +448,7 @@ function formatLocalDate(date) {
   return `${year}-${month}-${day}`;
 }
 
+/** Set report dates from the selected period or enable a custom range. */
 function updateReportDateFields() {
   const period = document.getElementById('report-period')?.value;
   const range = document.getElementById('report-custom-range');
@@ -460,6 +478,7 @@ function updateReportDateFields() {
   endInput.value = formatLocalDate(end);
 }
 
+/** Destroy the report chart and restore the report's empty state. */
 function clearReportData() {
   reportChart?.destroy();
   reportChart = null;
@@ -474,6 +493,7 @@ function clearReportData() {
   document.getElementById('report-advisory')?.replaceChildren();
 }
 
+/** Request the selected report period and render the returned data. */
 async function loadEnergyReport() {
   const startDate = document.getElementById('report-start-date')?.value;
   const endDate = document.getElementById('report-end-date')?.value;
@@ -498,6 +518,7 @@ async function loadEnergyReport() {
   }
 }
 
+/** Populate report totals, source breakdown, chart, and advisories. */
 function renderEnergyReport(report) {
   const { summary, source_breakdown: sources, daily_trends: trends, advisory } = report;
   const status = document.getElementById('report-status');
@@ -549,6 +570,7 @@ function renderEnergyReport(report) {
   status.textContent = `Report generated for ${summary.start_date} through ${summary.end_date}.`;
 }
 
+/** Draw the daily energy trend chart and its accessible equivalent. */
 function renderReportChart(trends) {
   const canvas = document.getElementById('reportChart');
   if (!canvas || !window.Chart) return;
@@ -576,6 +598,7 @@ function renderReportChart(trends) {
   });
 }
 
+/** Render explanatory advisories returned with the energy report. */
 function renderReportAdvisories(advisories) {
   const container = document.getElementById('report-advisory');
   if (!container) return;
@@ -601,6 +624,7 @@ function renderReportAdvisories(advisories) {
   });
 }
 
+/** Connect the report period selector and generate-report action. */
 function setupReportForm() {
   const period = document.getElementById('report-period');
   const form = document.getElementById('form-report-range');
@@ -612,6 +636,7 @@ function setupReportForm() {
   });
 }
 
+/** Render dashboard charts and update their screen-reader data tables. */
 function renderCharts(breakdown, weeklyTrends = null) {
   const weeklyState = document.getElementById('weekly-chart-state');
   const donutState = document.getElementById('donut-chart-state');
@@ -888,6 +913,7 @@ function renderCharts(breakdown, weeklyTrends = null) {
 }
 
 // Advisories Renderer
+/** Present dashboard energy advisories as accessible alert cards. */
 function renderAdvisories(advisories) {
   const container = document.getElementById('advisory-container');
   if (!container) return;
@@ -907,6 +933,7 @@ function renderAdvisories(advisories) {
     </div>`).join('');
 }
 
+/** Map an energy source name to its display icon. */
 function getSourceIcon(source) {
   const icons = {
     LPG: 'fire',
@@ -917,6 +944,7 @@ function getSourceIcon(source) {
   return icons[source] || 'lightning-charge-fill';
 }
 
+/** Format a log timestamp using its recorded time or calendar date. */
 function formatLogTimestamp(logDate, createdAt) {
   const raw = createdAt || logDate;
   if (!raw) return '--';
@@ -936,6 +964,7 @@ function formatLogTimestamp(logDate, createdAt) {
 }
 
 // Recent Logs Loader
+/** Load and render the authenticated household's recent energy logs. */
 async function loadRecentLogs() {
   if (!authenticatedUser) return;
   const requestRevision = authRevision;
@@ -972,6 +1001,7 @@ async function loadRecentLogs() {
 }
 
 // Button Loading Helper
+/** Disable a form button and show or clear its in-progress indicator. */
 function setButtonLoading(btn, isLoading) {
   if (!btn) return;
   if (isLoading) {
@@ -989,12 +1019,14 @@ function setButtonLoading(btn, isLoading) {
   }
 }
 
+/** Open a Bootstrap modal by its element ID. */
 function openModal(id) {
   const m = document.getElementById(id);
   if (!m) return;
   bootstrap.Modal.getOrCreateInstance(m).show();
 }
 
+/** Blur focused controls before hiding a modal to preserve accessibility. */
 function closeModal(id) {
   const m = document.getElementById(id);
   if (!m) return;
@@ -1005,6 +1037,7 @@ function closeModal(id) {
 }
 
 // LPG Form Dynamic Calculator
+/** Preview LPG remaining mass and usage, then submit scale readings. */
 function setupLpgForm() {
   const input = document.getElementById('lpg-gross-weight');
   const refillBox = document.getElementById('lpg-refill-check');
@@ -1110,6 +1143,7 @@ function setupLpgForm() {
   }
 }
 
+/** Recalculate appliance energy and estimated cost from the current inputs. */
 function updateAppliancePreview() {
   const select = document.getElementById('appliance-select');
   const hoursInput = document.getElementById('appliance-runtime');
@@ -1127,6 +1161,7 @@ function updateAppliancePreview() {
   document.getElementById('appliance-calc-cost').textContent = cost;
 }
 
+/** Load household appliance profiles for logging and management. */
 async function loadAppliances() {
   try {
     const res = await apiFetch('/api/v1/appliances');
@@ -1166,6 +1201,7 @@ async function loadAppliances() {
   }
 }
 
+/** Render appliance profiles and their edit/delete controls. */
 function renderManagedAppliances() {
   const tbody = document.getElementById('managed-appliances-body');
   if (!tbody) return;
@@ -1207,6 +1243,7 @@ function renderManagedAppliances() {
   });
 }
 
+/** Load a selected appliance profile into the management form. */
 function editApplianceProfile(appliance) {
   editingApplianceId = appliance.id;
   document.getElementById('appliance-profile-name').value = appliance.name;
@@ -1219,6 +1256,7 @@ function editApplianceProfile(appliance) {
   document.getElementById('appliance-profile-name').focus();
 }
 
+/** Clear appliance management fields and return the form to create mode. */
 function resetApplianceProfileForm() {
   document.getElementById('form-appliance-profile').reset();
   editingApplianceId = null;
@@ -1229,6 +1267,7 @@ function resetApplianceProfileForm() {
   feedback.className = 'small mb-0 mt-2';
 }
 
+/** Confirm and delete an appliance profile, then refresh its listing. */
 async function deleteApplianceProfile(appliance) {
   const confirmed = window.confirm(
     `Delete ${appliance.name}? Its runtime logs will also be deleted.`
@@ -1253,6 +1292,7 @@ async function deleteApplianceProfile(appliance) {
   }
 }
 
+/** Attach create, edit, and delete handlers to appliance management UI. */
 function setupApplianceManagement() {
   const form = document.getElementById('form-appliance-profile');
   const feedback = document.getElementById('appliance-profile-feedback');
@@ -1303,6 +1343,7 @@ function setupApplianceManagement() {
 }
 
 // Appliance Form Setup
+/** Connect appliance runtime inputs and submit daily usage logs. */
 function setupApplianceForm() {
   const select = document.getElementById('appliance-select');
   const hoursInput = document.getElementById('appliance-runtime');
@@ -1348,6 +1389,7 @@ function setupApplianceForm() {
 }
 
 // Other Fuel Log Forms
+/** Connect kerosene, solar, and tariff forms to their API endpoints. */
 function setupOtherFuelForms() {
   const formKero = document.getElementById('form-kerosene-log');
   const submitKeroBtn = document.getElementById('btn-submit-fuel');
@@ -1445,6 +1487,7 @@ function setupOtherFuelForms() {
 }
 
 // Auth form handlers
+/** Attach sign-in and registration handlers to the authentication forms. */
 function setupAuthForms() {
   const authAlert = document.getElementById('auth-alert');
   function showAuthAlert(msg) {

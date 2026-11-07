@@ -5,6 +5,7 @@ from hems.services.advisory_service import generate_advisories
 from datetime import date
 
 def get_latest_cylinder(household_id: int) -> dict:
+    """Return the active cylinder's latest reading, or an empty-state profile."""
     db = get_db()
     row = db.execute(
         """SELECT c.id, c.brand, c.nominal_capacity_kg, c.tare_weight_kg,
@@ -38,6 +39,7 @@ def get_latest_cylinder(household_id: int) -> dict:
     }
 
 def get_tariff_rates(household_id: int, effective_on: str = None) -> dict:
+    """Select the household rates active on a date, falling back to defaults."""
     db = get_db()
     if effective_on:
         row = db.execute(
@@ -67,6 +69,7 @@ def get_tariff_rates(household_id: int, effective_on: str = None) -> dict:
 
 
 def _normalize_tariff_row(row) -> dict:
+    """Convert database tariff values to JSON-ready numeric and date values."""
     tariffs = dict(row)
     for rate_name in DEFAULT_TARIFFS:
         tariffs[rate_name] = float(tariffs[rate_name])
@@ -78,6 +81,7 @@ def _normalize_tariff_row(row) -> dict:
 def get_cost_totals(
     household_id: int, start_date: str = None, end_date: str = None
 ) -> dict:
+    """Calculate fuel costs by effective tariff period for an optional range."""
     db = get_db()
     range_filter = " AND {date_column} BETWEEN ? AND ?" if start_date and end_date else ""
     range_params = (start_date, end_date) if start_date and end_date else ()
@@ -194,6 +198,7 @@ def get_cost_totals(
 
 
 def get_source_totals(household_id: int, start_date: str = None, end_date: str = None) -> dict:
+    """Sum logged quantities and normalized energy by source for a date range."""
     db = get_db()
     date_filter = " AND {col} BETWEEN ? AND ?" if start_date and end_date else ""
     date_params = (start_date, end_date) if start_date and end_date else ()
@@ -247,6 +252,7 @@ def get_source_totals(household_id: int, start_date: str = None, end_date: str =
     }
 
 def get_weekly_trends(household_id: int) -> dict:
+    """Return four consecutive weekly energy totals for dashboard charts."""
     from datetime import date, timedelta
     today = date.today()
     weeks = []
@@ -303,6 +309,7 @@ def get_weekly_trends(household_id: int) -> dict:
     }
 
 def get_dashboard_data(household_id: int) -> dict:
+    """Assemble the current-month dashboard payload for one household."""
     import calendar
     db = get_db()
     today = date.today()
@@ -371,6 +378,7 @@ def get_dashboard_data(household_id: int) -> dict:
 
 
 def get_report_data(household_id: int, start_date: str, end_date: str) -> dict:
+    """Build energy, cost, trend, and advisory data for a requested date range."""
     db = get_db()
     date_range = (household_id, start_date, end_date)
 

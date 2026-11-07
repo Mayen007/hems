@@ -6,11 +6,13 @@ web_bp = Blueprint("web", __name__)
 
 @web_bp.route("/")
 def index():
+    """Render the HEMS application home page."""
     return render_template("index.html")
 
 
 @web_bp.route("/favicon.ico")
 def favicon():
+    """Serve the application favicon."""
     return send_from_directory(
         "static",
         "favicon.svg",
